@@ -29,3 +29,5 @@ For now, this is being used for publishing simple GameMaker examples and demos.
 <https://xotmatrix.github.io/demos/rector/index.html>
 
 <https://xotmatrix.github.io/demos/line_box/index.html>
+
+<https://xotmatrix.github.io/demos/low-pass-filter/index.html>
