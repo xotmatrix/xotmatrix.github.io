@@ -142,14 +142,20 @@ table#notation {
     font-weight: bold;
     margin-bottom: 2em;
 }
-table#notation td {
-    padding: 0.25em 1em;
-    vertical-align: top;
-}
 table#notation th {
     font-size: 12pt;
     font-weight: bolder;
     border-bottom: 1px solid black;
+}
+table#notation td {
+    padding: 0.25em 1em;
+    vertical-align: top;
+}
+table#notation tr:nth-child(2) td {
+    padding-top: 1em;
+}
+table#notation td#figures {
+    padding: 1em 1em 0.5em 3em;
 }
 table#notation span {
     display: block;
@@ -175,10 +181,6 @@ table#notation li:nth-child(11) {
     border: none;
     padding: 0 0;
 }
-table#notation td#figures {
-    padding: 0.5em 1em 0.5em 3em;
-}
-
 
 
 /**********************************************************
@@ -202,7 +204,7 @@ table.instructions {
 }
 .instructions th {
     border-top: 1px solid black;
-    vertical-align: middle;
+    vertical-align: bottom;
     font-weight: bolder;
 }
 .instructions th:nth-child(1) { width: 24% }
@@ -337,7 +339,7 @@ table#codes tr:nth-child(65) td {
     <ul><li>C</li><li>&larr;</li><li>7</li><li>6</li><li>5</li><li>4</li><li>3</li><li>2</li><li>1</li><li>0</li><li>&larr;</li><li>C</li></ul>
     <span>FIGURE 4. ROR &ndash; ROTATE ONE BIT RIGHT</span>
     <ul><li>C</li><li>&rarr;</li><li>7</li><li>6</li><li>5</li><li>4</li><li>3</li><li>2</li><li>1</li><li>0</li><li>&rarr;</li><li>C</li></ul>
-    <span>* NOTE 1. BIT &ndash; TEST BITS</span>
+    <span>NOTE 1. BIT &ndash; TEST BITS</span>
     Bit 6 and 7 are transfered to the status register.<br />If the result of A &and; M is zero then Z=1, else Z=0.
     </td></tr>
     <tr><td>X, Y</td>       <td>Index Registers</td></tr>
@@ -350,15 +352,15 @@ table#codes tr:nth-child(65) td {
     <tr><td>+</td>          <td>Add</td></tr>
     <tr><td>&and;</td>      <td>Logical AND</td></tr>
     <tr><td>-</td>          <td>Subtract</td></tr>
-    <tr><td>&oplus;</td>    <td>Logical Exclusive OR</td></tr>
+    <tr><td>&veebar;</td>   <td>Logical Exclusive OR</td></tr>
     <tr><td>&uarr;</td>     <td>Transfer From Stack</td></tr>
     <tr><td>&darr;</td>     <td>Transfer To Stack</td></tr>
     <tr><td>&rarr;</td>     <td>Transfer To</td></tr>
     <tr><td>&larr;</td>     <td>Transfer To</td></tr>
     <tr><td>&or;</td>       <td>Logical OR</td></tr>
     <tr><td>PC</td>         <td>Program Counter</td></tr>
-    <tr><td>PCL</td>        <td>Program Counter High</td></tr>
-    <tr><td>PCH</td>        <td>Program Counter Low</td></tr>
+    <tr><td>PCH</td>        <td>Program Counter High</td></tr>
+    <tr><td>PCL</td>        <td>Program Counter Low</td></tr>
     <tr><td>Oper</td>       <td>Operand</td></tr>
     <tr><td>#</td>          <td>Immediate Addressing Mode</td></tr>
 </table>
@@ -405,7 +407,7 @@ table#codes tr:nth-child(65) td {
         <td>AND #Oper<br />AND Oper<br />AND Oper,X<br />AND Oper<br />AND Oper,X<br />AND Oper,Y<br />AND (Oper,X)<br />AND (Oper),Y</td>
         <td>29<br />25<br />35<br />2D<br />3D<br />39<br />21<br />31</td>
         <td>2<br />2<br />2<br />3<br />3<br />3<br />2<br />2</td>
-        <td>&check; &check; &ndash; &ndash; &ndash; &check;</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
     </tr>
     <!-- ASL -->
     <tr>
@@ -472,7 +474,7 @@ table#codes tr:nth-child(65) td {
         <td>Test bits in memory with accumulator</td>
         <td>A &and; M<br />M<sub>7</sub> &rarr; N<br />M<sub>6</sub> &rarr; V</td>
         <td>Zero Page<br />Absolute</td>
-        <td>BIT* Oper<br />BIT* Oper</td>
+        <td>BIT Oper<br />BIT Oper</td>
         <td>24<br />2C</td>
         <td>2<br />3</td>
         <td>M<sub>7</sub> &check; &ndash; &ndash; &ndash; M<sub>6</sub></td>
@@ -525,7 +527,7 @@ table#codes tr:nth-child(65) td {
         <td></td><td></td><td></td><td></td><td></td><td></td>
     </tr>
     <tr>
-        <td>Force Break</td>
+        <td>Force break interrupt</td>
         <td>Forced Interrupt<br />PC+2 &darr;<br />P &darr;</td>
         <td>Implied</td>
         <td>BRK</td>
@@ -613,7 +615,7 @@ table#codes tr:nth-child(65) td {
         <td></td><td></td><td></td><td></td><td></td><td></td>
     </tr>
     <tr>
-        <td>Clear interrupt disable status</td>
+        <td>Clear interrupt disable</td>
         <td>0 &rarr; I</td>
         <td>Implied</td>
         <td>CLI</td>
@@ -673,7 +675,7 @@ table#codes tr:nth-child(65) td {
         <td>Y - M</td>
         <td>Immediate<br />Zero Page<br />Absolute</td>
         <td>CPY #Oper<br />CPY Oper<br />CPY Oper</td>
-        <td>c0<br />c4<br />cC</td>
+        <td>C0<br />C4<br />CC</td>
         <td>2<br />2<br />3</td>
         <td>&check; &check; &check; &ndash; &ndash; &ndash;</td>
     </tr>
@@ -725,8 +727,8 @@ table#codes tr:nth-child(65) td {
         <td></td><td></td><td></td><td></td><td></td><td></td>
     </tr>
     <tr>
-        <td>"Exclusive-Or" memory with accumulator</td>
-        <td>A &oplus; C &rarr; A</td>
+        <td>"Exclusive OR" memory with accumulator</td>
+        <td>A &veebar; M &rarr; A</td>
         <td>Immediate<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X<br />Absolute,Y<br />(Indirect,X)<br />(Indirect),Y</td>
         <td>EOR #Oper<br />EOR Oper<br />EOR Oper,X<br />EOR Oper<br />EOR Oper,X<br />EOR Oper,Y<br />EOR (Oper,X)<br />EOR (Oper),Y</td>
         <td>49<br />45<br />55<br />4D<br />5D<br />59<br />41<br />51</td>
@@ -799,9 +801,9 @@ table#codes tr:nth-child(65) td {
         <td></td><td></td><td></td><td></td><td></td><td></td>
     </tr>
     <tr>
-        <td>Increment index X by one</td>
+        <td>Jump to new location</td>
         <td>(PC + 1) &rarr; PCL<br />(PC + 2) &rarr; PCH</td>
-        <td>Absolute<br />Indirect</td>
+        <td>Absolute<br />(Indirect)</td>
         <td>JMP Oper<br />JMP (Oper)</td>
         <td>4C<br />6C</td>
         <td>3<br />3<br /></td>
@@ -813,7 +815,7 @@ table#codes tr:nth-child(65) td {
         <td></td><td></td><td></td><td></td><td></td><td></td>
     </tr>
     <tr>
-        <td>Increment index X by one</td>
+        <td>Jump to new location saving return address</td>
         <td>PC + 2 &darr;<br />(PC + 1) &rarr; PCL<br />(PC + 2) &rarr; PCH</td>
         <td>Absolute
         <td>JSR Oper</td>
@@ -916,10 +918,10 @@ table#codes tr:nth-child(65) td {
     </tr>
     <tr>
         <td>"OR" memory with accumulator</td>
-        <td>A &or; C &rarr; A</td>
+        <td>A &or; M &rarr; A</td>
         <td>Immediate<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X<br />Absolute,Y<br />(Indirect,X)<br />(Indirect),Y</td>
         <td>ORA #Oper<br />ORA Oper<br />ORA Oper,X<br />ORA Oper<br />ORA Oper,X<br />ORA Oper,Y<br />ORA (Oper,X)<br />ORA (Oper),Y</td>
-        <td>49<br />45<br />55<br />4D<br />5D<br />59<br />41<br />51</td>
+        <td>09<br />05<br />15<br />0D<br />1D<br />19<br />01<br />11</td>
         <td>2<br />2<br />2<br />3<br />3<br />3<br />2<br />2</td>
         <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
     </tr>
@@ -1101,7 +1103,7 @@ table#codes tr:nth-child(65) td {
         <td></td><td></td><td></td><td></td><td></td><td></td>
     </tr>
     <tr>
-        <td>Set interrupt disable status</td>
+        <td>Set interrupt disable</td>
         <td>1 &rarr; I</td>
         <td>Implied</td>
         <td>SEI</td>
@@ -1279,7 +1281,7 @@ table#codes tr:nth-child(65) td {
     <tr><td>1E</td><td>ASL</td><td>Absolute,X</td>  <td>5E</td><td>LSR</td><td>Absolute,X</td>  <td>9E</td><td>   </td><td></td>            <td>DE</td><td>DEC</td><td>Absolute,X</td></tr>
     <tr><td>1F</td><td>   </td><td></td>            <td>5F</td><td>   </td><td></td>            <td>9F</td><td>   </td><td></td>            <td>DF</td><td>   </td><td></td></tr>
 
-    <tr><td>20</td><td>JSR</td><td></td>            <td>60</td><td>RTI</td><td></td>            <td>A0</td><td>LDY</td><td>Immediate</td>   <td>E0</td><td>CPX</td><td>Immediate</td></tr>
+    <tr><td>20</td><td>JSR</td><td></td>            <td>60</td><td>RTS</td><td></td>            <td>A0</td><td>LDY</td><td>Immediate</td>   <td>E0</td><td>CPX</td><td>Immediate</td></tr>
     <tr><td>21</td><td>AND</td><td>(Indirect,X)</td><td>61</td><td>ADC</td><td>(Indirect,X)</td><td>A1</td><td>LDA</td><td>(Indirect,X)</td><td>E1</td><td>SBC</td><td>(Indirect,X)</td></tr>
     <tr><td>22</td><td>   </td><td></td>            <td>62</td><td>   </td><td></td>            <td>A2</td><td>LDX</td><td>Immediate</td>   <td>E2</td><td>   </td><td></td></tr>
     <tr><td>23</td><td>   </td><td></td>            <td>63</td><td>   </td><td></td>            <td>A3</td><td>   </td><td></td>            <td>E3</td><td>   </td><td></td></tr>
@@ -1291,7 +1293,7 @@ table#codes tr:nth-child(65) td {
     <tr><td>29</td><td>AND</td><td>Immediate</td>   <td>69</td><td>ADC</td><td>Immediate</td>   <td>A9</td><td>LDA</td><td>Immediate</td>   <td>E9</td><td>SBC</td><td>Immediate</td></tr>
     <tr><td>2A</td><td>ROL</td><td>Accumulator</td> <td>6A</td><td>ROR</td><td>Accumulator</td> <td>AA</td><td>TAX</td><td></td>            <td>EA</td><td>NOP</td><td></td></tr>
     <tr><td>2B</td><td>   </td><td></td>            <td>6B</td><td>   </td><td></td>            <td>AB</td><td>   </td><td></td>            <td>EB</td><td>   </td><td></td></tr>
-    <tr><td>2C</td><td>BIT</td><td>Absolute</td>    <td>6C</td><td>JMP</td><td>Indirect</td>    <td>AC</td><td>LDY</td><td>Absolute</td>    <td>EC</td><td>CPX</td><td>Absolute</td></tr>
+    <tr><td>2C</td><td>BIT</td><td>Absolute</td>    <td>6C</td><td>JMP</td><td>(Indirect)</td>  <td>AC</td><td>LDY</td><td>Absolute</td>    <td>EC</td><td>CPX</td><td>Absolute</td></tr>
     <tr><td>2D</td><td>AND</td><td>Absolute</td>    <td>6D</td><td>ADC</td><td>Absolute</td>    <td>AD</td><td>LDA</td><td>Absolute</td>    <td>ED</td><td>SBC</td><td>Absolute</td></tr>
     <tr><td>2E</td><td>ROL</td><td>Absolute</td>    <td>6E</td><td>ROR</td><td>Absolute</td>    <td>AE</td><td>LDX</td><td>Absolute</td>    <td>EE</td><td>INC</td><td>Absolute</td></tr>
     <tr><td>2F</td><td>   </td><td></td>            <td>6F</td><td>   </td><td></td>            <td>AF</td><td>   </td><td></td>            <td>EF</td><td>   </td><td></td></tr>
