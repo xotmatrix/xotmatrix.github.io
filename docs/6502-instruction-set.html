@@ -528,7 +528,7 @@ table#codes tr:nth-child(65) td {
     </tr>
     <tr>
         <td>Force break interrupt</td>
-        <td>Forced Interrupt<br />PC+2 &darr;<br />P &darr;</td>
+        <td>Forced Interrupt<br />PC + 2 &darr;<br />P &darr;</td>
         <td>Implied</td>
         <td>BRK</td>
         <td>00</td>
@@ -802,7 +802,7 @@ table#codes tr:nth-child(65) td {
     </tr>
     <tr>
         <td>Jump to new location</td>
-        <td>(PC + 1) &rarr; PCL<br />(PC + 2) &rarr; PCH</td>
+        <td>PC + 1 &rarr; PCL<br />PC + 2 &rarr; PCH</td>
         <td>Absolute<br />(Indirect)</td>
         <td>JMP Oper<br />JMP (Oper)</td>
         <td>4C<br />6C</td>
@@ -816,7 +816,7 @@ table#codes tr:nth-child(65) td {
     </tr>
     <tr>
         <td>Jump to new location saving return address</td>
-        <td>PC + 2 &darr;<br />(PC + 1) &rarr; PCL<br />(PC + 2) &rarr; PCH</td>
+        <td>PC + 2 &darr;<br />PC + 1 &rarr; PCL<br />PC + 2 &rarr; PCH</td>
         <td>Absolute
         <td>JSR Oper</td>
         <td>20</td>
