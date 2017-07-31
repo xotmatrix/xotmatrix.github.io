@@ -1,0 +1,1317 @@
+<html>
+<head>
+<title>6502 Instruction Set</title>
+<style>
+/**********************************************************
+**
+**  PRINTER CONTROL
+**
+*/
+
+@media all {
+	.page-break	{ display: block; margin-bottom: 1em; }
+    table { width: 7.5in; }
+}
+@media print {
+	.page-break	{ display: block; margin-bottom: 0; page-break-before: always; }
+}
+
+
+
+/**********************************************************
+**
+**  CHARACTER CLASSES
+**
+*/
+
+span.not {
+    text-decoration: overline;
+}
+
+
+
+/**********************************************************
+**
+**  PROGRAMMING MODEL
+**
+*/
+
+table#model {
+    border-collapse: collapse;
+    font-family: sans-serif;
+    font-size: 9pt;
+    font-weight: bold;
+    margin-bottom: 2em;
+}
+table#model th {
+    font-size: 12pt;
+    font-weight: bolder;
+    border-bottom: 1px solid black;
+}
+table#model td {
+    border: none;
+    padding: 0.25em 0;
+}
+table#model td:last-child {
+    padding: 0.25em 2em;
+}
+table#model tr:nth-child(2)  td,
+table#model tr:nth-child(4)  td,
+table#model tr:nth-child(6)  td,
+table#model tr:nth-child(8)  td,
+table#model tr:nth-child(10) td,
+table#model tr:nth-child(12) td {
+    padding-top: 1em;
+    font-size: 8pt;
+    text-align: left;
+}
+table#model tr:nth-child(2)  td:nth-child(3),
+table#model tr:nth-child(4)  td:nth-child(3),
+table#model tr:nth-child(6)  td:nth-child(3),
+table#model tr:nth-child(8)  td:nth-child(3),
+table#model tr:nth-child(10) td:nth-child(3),
+table#model tr:nth-child(12) td:nth-child(3) {
+    padding-top: 1em;
+    font-size: 8pt;
+    text-align: right;
+}
+table#model tr:nth-child(odd) td:nth-child(1),
+table#model tr:nth-child(odd) td:nth-child(2) {
+    text-align:center;
+}
+table#model tr:nth-child(11) td:nth-child(3) {
+    text-align:center;
+}
+table#model tr:nth-child(3) td:nth-child(2),
+table#model tr:nth-child(5) td:nth-child(2),
+table#model tr:nth-child(7) td:nth-child(2),
+table#model tr:nth-child(9) td:nth-child(1),
+table#model tr:nth-child(9) td:nth-child(2),
+table#model tr:nth-child(11) td:nth-child(2),
+table#model tr:nth-child(11) td:nth-child(3) {
+    border: 1px solid black;
+    min-width: 16em;
+}
+table#model tr:nth-child(11) td:nth-child(1) {
+    min-width: 12em;
+}
+table#model tr:nth-child(11) td:nth-child(2) {
+    min-width: 4em;
+}
+table#model tr:nth-child(13) td:nth-child(2),
+table#model tr:nth-child(13) td:nth-child(3),
+table#model tr:nth-child(13) td:nth-child(4),
+table#model tr:nth-child(13) td:nth-child(5),
+table#model tr:nth-child(13) td:nth-child(6),
+table#model tr:nth-child(13) td:nth-child(7),
+table#model tr:nth-child(13) td:nth-child(8),
+table#model tr:nth-child(13) td:nth-child(9)
+ {
+    border: 1px solid black;
+    text-align: center;
+    min-width: 2em;
+    padding: 0.25em 0;
+}
+table#model tr:nth-child(14) td {
+    height: 10em;
+    white-space: nowrap;
+    padding: 0 0;
+}
+table#model tr:nth-child(14) td div {
+    transform: translate(0.3em, -5em) rotate(45deg);
+    max-width: 1em;
+}
+table#model tr:nth-child(14) td div span {
+    border-bottom: 1px solid black;
+    padding: 0 0 0 2em;
+}
+
+
+
+/**********************************************************
+**
+**  INSTRUCTION NOTATION
+**
+*/
+
+table#notation {
+    border-collapse: collapse;
+    border: none;
+    font-family: sans-serif;
+    font-size: 9pt;
+    font-weight: bold;
+    margin-bottom: 2em;
+}
+table#notation td {
+    padding: 0.25em 1em;
+    vertical-align: top;
+}
+table#notation th {
+    font-size: 12pt;
+    font-weight: bolder;
+    border-bottom: 1px solid black;
+}
+table#notation span {
+    display: block;
+}
+table#notation ul {
+    padding: 0 0 2em 0;
+}
+table#notation li {
+    display: inline-block;
+    border: 1px solid black;
+    border-left: none;
+    padding: 0.25em 0.5em;
+    min-width: 1em;
+    text-align: center;
+}
+table#notation li:nth-child(1),
+table#notation li:nth-child(3),
+table#notation li:nth-child(12) {
+    border-left: 1px solid black;
+}
+table#notation li:nth-child(2),
+table#notation li:nth-child(11) {
+    border: none;
+    padding: 0 0;
+}
+table#notation td#figures {
+    padding: 0.5em 1em 0.5em 3em;
+}
+
+
+
+/**********************************************************
+**
+**  INSTRUCTIONS
+**
+*/
+
+table.instructions {
+    border-collapse: collapse;
+    border: 1px solid black;
+    font-family: sans-serif;
+    font-size: 9pt;
+    font-weight: bold;
+    margin: 0 0;
+    padding: 0 0;
+}
+.instructions span.name {
+    font-size: 14pt;
+    font-weight: bolder;
+}
+.instructions th {
+    border-top: 1px solid black;
+    vertical-align: middle;
+    font-weight: bolder;
+}
+.instructions th:nth-child(1) { width: 24% }
+.instructions th:nth-child(2) { width: 16% }
+.instructions th:nth-child(3) { width: 16% }
+.instructions th:nth-child(4) { width: 16% }
+.instructions th:nth-child(5) { width: 4%  }
+.instructions th:nth-child(6) { width: 4%  }
+.instructions th:nth-child(7) { width: 20% }
+
+.instructions td {
+    vertical-align: top;
+}
+.instructions td,
+.instructions th {
+    border-left: 1px solid black;
+    padding: 0.0em 0.6em 0.2em 0.6em;
+    margin: 0 0;
+}
+.instructions tr:first-child td {
+    border-bottom: none;
+}
+.instructions tr:nth-child(even) {
+    border-top: 1px solid black;
+}
+.instructions tr:last-child {
+    border-bottom: 1px solid black;
+}
+.instructions td:nth-child(1),
+.instructions td:nth-child(2) {
+    font-family: sans-serif;
+}
+.instructions td:nth-child(5),
+.instructions td:nth-child(6),
+.instructions td:nth-child(7) {
+    text-align: center;
+}
+.instructions td:last-child,
+.instructions th:last-child {
+    border-right: 1px solid black;
+}
+
+
+
+/**********************************************************
+**
+**  HEX OPERATION CODES
+**
+*/
+
+table#codes {
+    border: 1px solid black;
+    border-collapse: collapse;
+    font-family: sans-serif;
+    font-size: 8.5pt;
+    font-weight: bold;
+}
+table#codes th {
+    font-size: 12pt;
+    font-weight: bolder;
+    border-bottom: 1px solid black;
+}
+table#codes td {
+    border-top:  none;
+    text-align: left;
+    padding: 0.15em 0.5em;
+}
+table#codes td:nth-child(3),
+table#codes td:nth-child(6),
+table#codes td:nth-child(9),
+table#codes td:nth-child(12) {
+    border-right: 1px solid black;
+    padding-right: 2em;
+}
+table#codes td:nth-child(1),
+table#codes td:nth-child(4),
+table#codes td:nth-child(7),
+table#codes td:nth-child(10) {
+    padding-left: 2em;
+}
+table#codes tr:nth-child(2) td,
+table#codes tr:nth-child(18) td,
+table#codes tr:nth-child(34) td,
+table#codes tr:nth-child(50) td {
+    padding-top: 0.5em;
+}
+table#codes tr:nth-child(17) td,
+table#codes tr:nth-child(33) td,
+table#codes tr:nth-child(49) td,
+table#codes tr:nth-child(65) td {
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<table id="model">
+    <tr><th colspan="17">PROGRAMMING MODEL</th></tr>
+    <tr><td colspan="8"></td><td colspan="4">7</td><td colspan="4">0</td><td></td></tr>
+    <tr><td colspan="8"></td><td colspan="8">A</td><td>ACCUMULATOR</td></tr>
+    <tr><td colspan="8"></td><td colspan="4">7</td><td colspan="4">0</td><td></td></tr>
+    <tr><td colspan="8"></td><td colspan="8">Y</td><td>INDEX REGISTER Y</td></tr>
+    <tr><td colspan="8"></td><td colspan="4">7</td><td colspan="4">0</td><td></td></tr>
+    <tr><td colspan="8"></td><td colspan="8">X</td><td>INDEX REGISTER X</td></tr>
+    <tr><td colspan="8">15</td><td colspan="4">7</td><td colspan="4">0</td><td></td></tr>
+    <tr><td colspan="8">PCH</td><td colspan="8">PCL</td><td>PROGRAM COUNTER</td></tr>
+    <tr><td colspan="8"></td><td colspan="4">7</td><td colspan="4">0</td><td></td></tr>
+    <tr><td colspan="6"></td><td colspan="2">01</td><td colspan="8">S</td><td>STACK POINTER</td></tr>
+    <tr><td colspan="8"></td><td colspan="4">7</td><td colspan="4">0</td><td></td></tr>
+    <tr><td colspan="8"></td><td>N</td><td>V</td><td>-</td><td>B</td><td>D</td><td>I</td><td>Z</td><td>C</td><td>PROCESSOR STATUS REGISTER "P"</td></tr>
+    <tr><td colspan="8">
+        <td><div><span>NEGATIVE</span></div></td>
+        <td><div><span>OVERFLOW</span></div></td>
+        <td><div></td>
+        <td><div><span>BREAK COMMAND</span></div></td>
+        <td><div><span>DECIMAL MODE</span></div></td>
+        <td><div><span>INTERRUPT DISABLE</span></div></td>
+        <td><div><span>ZERO</span></div></td>
+        <td><div><span>CARRY</span></div></td>
+        <td></td></tr>
+</table>
+
+<table id="notation">
+    <tr><th colspan="3">INSTRUCTION NOTATION</th></tr>
+    <tr><td>A</td>          <td>Accumulator</td><td rowspan="22" id="figures">
+    <span>FIGURE 1. ASL &ndash; SHIFT ONE BIT LEFT</span>
+    <ul><li>C</li><li>&larr;</li><li>7</li><li>6</li><li>5</li><li>4</li><li>3</li><li>2</li><li>1</li><li>0</li><li>&larr;</li><li>0</li></ul>
+    <span>FIGURE 2. LSR &ndash; SHIFT ONE BIT RIGHT</span>
+    <ul><li>0</li><li>&rarr;</li><li>7</li><li>6</li><li>5</li><li>4</li><li>3</li><li>2</li><li>1</li><li>0</li><li>&rarr;</li><li>C</li></ul>
+    <span>FIGURE 3. ROL &ndash; ROTATE ONE BIT LEFT</span>
+    <ul><li>C</li><li>&larr;</li><li>7</li><li>6</li><li>5</li><li>4</li><li>3</li><li>2</li><li>1</li><li>0</li><li>&larr;</li><li>C</li></ul>
+    <span>FIGURE 4. ROR &ndash; ROTATE ONE BIT RIGHT</span>
+    <ul><li>C</li><li>&rarr;</li><li>7</li><li>6</li><li>5</li><li>4</li><li>3</li><li>2</li><li>1</li><li>0</li><li>&rarr;</li><li>C</li></ul>
+    <span>* NOTE 1. BIT &ndash; TEST BITS</span>
+    Bit 6 and 7 are transfered to the status register.<br />If the result of A &and; M is zero then Z=1, else Z=0.
+    </td></tr>
+    <tr><td>X, Y</td>       <td>Index Registers</td></tr>
+    <tr><td>M</td>          <td>Memory</td></tr>
+    <tr><td><span class="not">C</span></td><td>Borrow</td></tr>
+    <tr><td>P</td>          <td>Processor Status Register</td></tr>
+    <tr><td>S</td>          <td>Stack Pointer</td></tr>
+    <tr><td>&check;</td>    <td>Change</td></tr>
+    <tr><td>&ndash;</td>    <td>No Change</td></tr>
+    <tr><td>+</td>          <td>Add</td></tr>
+    <tr><td>&and;</td>      <td>Logical AND</td></tr>
+    <tr><td>-</td>          <td>Subtract</td></tr>
+    <tr><td>&oplus;</td>    <td>Logical Exclusive OR</td></tr>
+    <tr><td>&uarr;</td>     <td>Transfer From Stack</td></tr>
+    <tr><td>&darr;</td>     <td>Transfer To Stack</td></tr>
+    <tr><td>&rarr;</td>     <td>Transfer To</td></tr>
+    <tr><td>&larr;</td>     <td>Transfer To</td></tr>
+    <tr><td>&or;</td>       <td>Logical OR</td></tr>
+    <tr><td>PC</td>         <td>Program Counter</td></tr>
+    <tr><td>PCL</td>        <td>Program Counter High</td></tr>
+    <tr><td>PCH</td>        <td>Program Counter Low</td></tr>
+    <tr><td>Oper</td>       <td>Operand</td></tr>
+    <tr><td>#</td>          <td>Immediate Addressing Mode</td></tr>
+</table>
+
+
+
+<div class="page-break"><!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --></div>
+
+
+
+<table class="instructions">
+    <tr>
+        <th>Name<br />Description</th>
+        <th>Operation</th>
+        <th>Addressing<br />Mode</th>
+        <th>Assembly<br />Language<br />Form</th>
+        <th>HEX<br />OP<br />Code</th>
+        <th>No.<br />Bytes</th>
+        <th>"P" Status Reg.<br /><span>N Z C I D V</span></th>
+    </tr>
+    <!-- ADC -->
+    <tr>
+        <td><span class="name">ADC</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Add memory to accumulator with carry</td>
+        <td>A + M + C &rarr; A</td>
+        <td>Immediate<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X<br />Absolute,Y<br />(Indirect,X)<br />(Indirect),Y</td>
+        <td>ADC #Oper<br />ADC Oper<br />ADC Oper,X<br />ADC Oper<br />ADC Oper,X<br />ADC Oper,Y<br />ADC (Oper,X)<br />ADC (Oper),Y</td>
+        <td>69<br />65<br />75<br />6D<br />7D<br />79<br />61<br />71</td>
+        <td>2<br />2<br />2<br />3<br />3<br />3<br />2<br />2</td>
+        <td>&check; &check; &check; &ndash; &ndash; &check;</td>
+    </tr>
+    <!-- AND -->
+    <tr>
+        <td><span class="name">AND</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>"AND" memory with accumulator</td>
+        <td>A &and; M &rarr; A</td>
+        <td>Immediate<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X<br />Absolute,Y<br />(Indirect,X)<br />(Indirect),Y</td>
+        <td>AND #Oper<br />AND Oper<br />AND Oper,X<br />AND Oper<br />AND Oper,X<br />AND Oper,Y<br />AND (Oper,X)<br />AND (Oper),Y</td>
+        <td>29<br />25<br />35<br />2D<br />3D<br />39<br />21<br />31</td>
+        <td>2<br />2<br />2<br />3<br />3<br />3<br />2<br />2</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &check;</td>
+    </tr>
+    <!-- ASL -->
+    <tr>
+        <td><span class="name">ASL</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Shift left one bit<br />(Memory or Accumulator)</td>
+        <td>(See Figure 1)</td>
+        <td>Accumulator<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X</td>
+        <td>ASL A<br />ASL Oper<br />ASL Oper,X<br />ASL Oper<br />ASL Oper,X</td>
+        <td>0A<br />06<br />16<br />0E<br />1E</td>
+        <td>1<br />2<br />2<br />3<br />3</td>
+        <td>&check; &check; &check; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- BCC -->
+    <tr>
+        <td><span class="name">BCC</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Branch on carry clear</td>
+        <td>Branch on C=0</td>
+        <td>Relative</td>
+        <td>BCC Oper</td>
+        <td>90</td>
+        <td>2</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- BCS -->
+    <tr>
+        <td><span class="name">BCS</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Branch on carry set</td>
+        <td>Branch on C=1</td>
+        <td>Relative</td>
+        <td>BCS Oper</td>
+        <td>B0</td>
+        <td>2</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- BEQ -->
+    <tr>
+        <td><span class="name">BEQ</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Branch on result zero</td>
+        <td>Branch on Z=1</td>
+        <td>Relative</td>
+        <td>BEQ Oper</td>
+        <td>F0</td>
+        <td>2</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- BIT -->
+    <tr>
+        <td><span class="name">BIT</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Test bits in memory with accumulator</td>
+        <td>A &and; M<br />M<sub>7</sub> &rarr; N<br />M<sub>6</sub> &rarr; V</td>
+        <td>Zero Page<br />Absolute</td>
+        <td>BIT* Oper<br />BIT* Oper</td>
+        <td>24<br />2C</td>
+        <td>2<br />3</td>
+        <td>M<sub>7</sub> &check; &ndash; &ndash; &ndash; M<sub>6</sub></td>
+    </tr>
+    <!-- BMI -->
+    <tr>
+        <td><span class="name">BMI</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Branch on result minus</td>
+        <td>Branch on N=1</td>
+        <td>Relative</td>
+        <td>BMI Oper</td>
+        <td>30</td>
+        <td>2</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- BNE -->
+    <tr>
+        <td><span class="name">BNE</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Branch on result not zero</td>
+        <td>Branch on Z=0</td>
+        <td>Relative</td>
+        <td>BNE Oper</td>
+        <td>D0</td>
+        <td>2</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- BPL -->
+    <tr>
+        <td><span class="name">BPL</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Branch on result plus</td>
+        <td>Branch on N=0</td>
+        <td>Relative</td>
+        <td>BPL Oper</td>
+        <td>10</td>
+        <td>2</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- BRK -->
+    <tr>
+        <td><span class="name">BRK</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Force Break</td>
+        <td>Forced Interrupt<br />PC+2 &darr;<br />P &darr;</td>
+        <td>Implied</td>
+        <td>BRK</td>
+        <td>00</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; 1 &ndash; &ndash;</td>
+    </tr>
+    <!-- BVC -->
+    <tr>
+        <td><span class="name">BVC</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Branch on overflow clear</td>
+        <td>Branch on V=0</td>
+        <td>Relative</td>
+        <td>BVC Oper</td>
+        <td>50</td>
+        <td>2</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+</table>
+
+
+
+<div class="page-break"><!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --></div>
+
+
+
+<table class="instructions">
+    <tr>
+        <th>Name<br />Description</th>
+        <th>Operation</th>
+        <th>Addressing<br />Mode</th>
+        <th>Assembly<br />Language<br />Form</th>
+        <th>HEX<br />OP<br />Code</th>
+        <th>No.<br />Bytes</th>
+        <th>"P" Status Reg.<br /><span>N Z C I D V</span></th>
+    </tr>
+    <!-- BVS -->
+    <tr>
+        <td><span class="name">BVS</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Branch on overflow set</td>
+        <td>Branch on V=1</td>
+        <td>Relative</td>
+        <td>BVS Oper</td>
+        <td>70</td>
+        <td>2</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- CLC -->
+    <tr>
+        <td><span class="name">CLC</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Clear carry flag</td>
+        <td>0 &rarr; C</td>
+        <td>Implied</td>
+        <td>CLC</td>
+        <td>18</td>
+        <td>1</td>
+        <td>&ndash; &ndash; 0 &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- CLD -->
+    <tr>
+        <td><span class="name">CLD</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Clear decimal mode</td>
+        <td>0 &rarr; D</td>
+        <td>Implied</td>
+        <td>CLD</td>
+        <td>D8</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; &ndash; 0 &ndash;</td>
+    </tr>
+    <!-- CLI -->
+    <tr>
+        <td><span class="name">CLI</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Clear interrupt disable status</td>
+        <td>0 &rarr; I</td>
+        <td>Implied</td>
+        <td>CLI</td>
+        <td>58</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; 0 &ndash; &ndash;</td>
+    </tr>
+    <!-- CLV -->
+    <tr>
+        <td><span class="name">CLV</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Clear overflow flag</td>
+        <td>0 &rarr; V</td>
+        <td>Implied</td>
+        <td>CLV</td>
+        <td>B8</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; 0</td>
+    </tr>
+    <!-- CMP -->
+    <tr>
+        <td><span class="name">CMP</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Compare memory and accumulator</td>
+        <td>A - M</td>
+        <td>Immediate<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X<br />Absolute,Y<br />(Indirect,X)<br />(Indirect),Y</td>
+        <td>CMP #Oper<br />CMP Oper<br />CMP Oper,X<br />CMP Oper<br />CMP Oper,X<br />CMP Oper,Y<br />CMP (Oper,X)<br />CMP (Oper),Y</td>
+        <td>C9<br />C5<br />D5<br />CD<br />DD<br />D9<br />C1<br />D1</td>
+        <td>2<br />2<br />2<br />3<br />3<br />3<br />2<br />2</td>
+        <td>&check; &check; &check; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- CPX -->
+    <tr>
+        <td><span class="name">CPX</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Compare memory and index X</td>
+        <td>X - M</td>
+        <td>Immediate<br />Zero Page<br />Absolute</td>
+        <td>CPX #Oper<br />CPX Oper<br />CPX Oper</td>
+        <td>E0<br />E4<br />EC</td>
+        <td>2<br />2<br />3</td>
+        <td>&check; &check; &check; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- CPY -->
+    <tr>
+        <td><span class="name">CPY</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Compare memory and index Y</td>
+        <td>Y - M</td>
+        <td>Immediate<br />Zero Page<br />Absolute</td>
+        <td>CPY #Oper<br />CPY Oper<br />CPY Oper</td>
+        <td>c0<br />c4<br />cC</td>
+        <td>2<br />2<br />3</td>
+        <td>&check; &check; &check; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- DEC -->
+    <tr>
+        <td><span class="name">DEC</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Decrement memory by one</td>
+        <td>M - 1 &rarr; M</td>
+        <td>Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X</td>
+        <td>DEC Oper<br />DEC Oper,X<br />DEC Oper<br />DEC Oper,X</td>
+        <td>C6<br />D6<br />CE<br />DE</td>
+        <td>2<br />2<br />3<br />3</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- DEX -->
+    <tr>
+        <td><span class="name">DEX</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Decrement index X by one</td>
+        <td>X - 1 &rarr; X</td>
+        <td>Implied</td>
+        <td>DEX</td>
+        <td>CA</td>
+        <td>1</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- DEY -->
+    <tr>
+        <td><span class="name">DEY</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Decrement index Y by one</td>
+        <td>Y - 1 &rarr; Y</td>
+        <td>Implied</td>
+        <td>DEY</td>
+        <td>88</td>
+        <td>1</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- EOR -->
+    <tr>
+        <td><span class="name">EOR</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>"Exclusive-Or" memory with accumulator</td>
+        <td>A &oplus; C &rarr; A</td>
+        <td>Immediate<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X<br />Absolute,Y<br />(Indirect,X)<br />(Indirect),Y</td>
+        <td>EOR #Oper<br />EOR Oper<br />EOR Oper,X<br />EOR Oper<br />EOR Oper,X<br />EOR Oper,Y<br />EOR (Oper,X)<br />EOR (Oper),Y</td>
+        <td>49<br />45<br />55<br />4D<br />5D<br />59<br />41<br />51</td>
+        <td>2<br />2<br />2<br />3<br />3<br />3<br />2<br />2</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+</table>
+
+
+
+<div class="page-break"><!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --></div>
+
+
+
+<table class="instructions">
+    <tr>
+        <th>Name<br />Description</th>
+        <th>Operation</th>
+        <th>Addressing<br />Mode</th>
+        <th>Assembly<br />Language<br />Form</th>
+        <th>HEX<br />OP<br />Code</th>
+        <th>No.<br />Bytes</th>
+        <th>"P" Status Reg.<br /><span>N Z C I D V</span></th>
+    </tr>
+    <!-- INC -->
+    <tr>
+        <td><span class="name">INC</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Increment memory by one</td>
+        <td>M + 1 &rarr; M</td>
+        <td>Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X</td>
+        <td>INC Oper<br />INC Oper,X<br />INC Oper<br />INC Oper,X</td>
+        <td>E6<br />F6<br />EE<br />FE</td>
+        <td>2<br />2<br />3<br />3</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- INX -->
+    <tr>
+        <td><span class="name">INX</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Increment index X by one</td>
+        <td>X + 1 &rarr; X</td>
+        <td>Implied</td>
+        <td>INX</td>
+        <td>E8</td>
+        <td>1</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- INY -->
+    <tr>
+        <td><span class="name">INY</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Increment index Y by one</td>
+        <td>Y + 1 &rarr; Y</td>
+        <td>Implied</td>
+        <td>INY</td>
+        <td>C8</td>
+        <td>1</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- JMP -->
+    <tr>
+        <td><span class="name">JMP</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Increment index X by one</td>
+        <td>(PC + 1) &rarr; PCL<br />(PC + 2) &rarr; PCH</td>
+        <td>Absolute<br />Indirect</td>
+        <td>JMP Oper<br />JMP (Oper)</td>
+        <td>4C<br />6C</td>
+        <td>3<br />3<br /></td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- JSR -->
+    <tr>
+        <td><span class="name">JSR</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Increment index X by one</td>
+        <td>PC + 2 &darr;<br />(PC + 1) &rarr; PCL<br />(PC + 2) &rarr; PCH</td>
+        <td>Absolute
+        <td>JSR Oper</td>
+        <td>20</td>
+        <td>3</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- LDA -->
+    <tr>
+        <td><span class="name">LDA</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Load accumulator with memory</td>
+        <td>M &rarr; A</td>
+        <td>Immediate<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X<br />Absolute,Y<br />(Indirect,X)<br />(Indirect),Y</td>
+        <td>LDA #Oper<br />LDA Oper<br />LDA Oper,X<br />LDA Oper<br />LDA Oper,X<br />LDA Oper,Y<br />LDA (Oper,X)<br />LDA (Oper),Y</td>
+        <td>A9<br />A5<br />B5<br />AD<br />BD<br />B9<br />A1<br />B1</td>
+        <td>2<br />2<br />2<br />3<br />3<br />3<br />2<br />2</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- LDX -->
+    <tr>
+        <td><span class="name">LDX</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Load index X with memory</td>
+        <td>M &rarr; X</td>
+        <td>Immediate<br />Zero Page<br />Zero Page,Y<br />Absolute<br />Absolute,Y</td>
+        <td>LDX #Oper<br />LDX Oper<br />LDX Oper,Y<br />LDX Oper<br />LDX Oper,Y</td>
+        <td>A2<br />A6<br />B6<br />AE<br />BE</td>
+        <td>2<br />2<br />2<br />3<br />3</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- LDY -->
+    <tr>
+        <td><span class="name">LDY</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Load index Y with memory</td>
+        <td>M &rarr; Y</td>
+        <td>Immediate<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X</td>
+        <td>LDY #Oper<br />LDY Oper<br />LDY Oper,X<br />LDY Oper<br />LDY Oper,X</td>
+        <td>A0<br />A4<br />B4<br />AC<br />BC</td>
+        <td>2<br />2<br />2<br />3<br />3</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- LSR -->
+    <tr>
+        <td><span class="name">LSR</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Shift right one bit<br />(memory or accumulator)</td>
+        <td>(See Figure 2)</td>
+        <td>Accumulator<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X</td>
+        <td>LSR A<br />LSR Oper<br />LSR Oper,X<br />LSR Oper<br />LSR Oper,X</td>
+        <td>4A<br />46<br />56<br />4E<br />5E</td>
+        <td>1<br />2<br />2<br />3<br />3</td>
+        <td>0 &check; &check; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- NOP -->
+    <tr>
+        <td><span class="name">NOP</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>No operation</td>
+        <td>No operation</td>
+        <td>Implied</td>
+        <td>NOP</td>
+        <td>EA</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+</table>
+
+
+
+<div class="page-break"><!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --></div>
+
+
+
+<table class="instructions">
+    <tr>
+        <th>Name<br />Description</th>
+        <th>Operation</th>
+        <th>Addressing<br />Mode</th>
+        <th>Assembly<br />Language<br />Form</th>
+        <th>HEX<br />OP<br />Code</th>
+        <th>No.<br />Bytes</th>
+        <th>"P" Status Reg.<br /><span>N Z C I D V</span></th>
+    </tr>
+    <!-- ORA -->
+    <tr>
+        <td><span class="name">ORA</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>"OR" memory with accumulator</td>
+        <td>A &or; C &rarr; A</td>
+        <td>Immediate<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X<br />Absolute,Y<br />(Indirect,X)<br />(Indirect),Y</td>
+        <td>ORA #Oper<br />ORA Oper<br />ORA Oper,X<br />ORA Oper<br />ORA Oper,X<br />ORA Oper,Y<br />ORA (Oper,X)<br />ORA (Oper),Y</td>
+        <td>49<br />45<br />55<br />4D<br />5D<br />59<br />41<br />51</td>
+        <td>2<br />2<br />2<br />3<br />3<br />3<br />2<br />2</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- PHA -->
+    <tr>
+        <td><span class="name">PHA</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Push accumulator on stack</td>
+        <td>A &darr;</td>
+        <td>Implied</td>
+        <td>PHA</td>
+        <td>48</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- PHP -->
+    <tr>
+        <td><span class="name">PHP</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Push processor status on stack</td>
+        <td>P &darr;</td>
+        <td>Implied</td>
+        <td>PHP</td>
+        <td>08</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- PLA -->
+    <tr>
+        <td><span class="name">PLA</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Pull accumulator from stack</td>
+        <td>A &uarr;</td>
+        <td>Implied</td>
+        <td>PLA</td>
+        <td>68</td>
+        <td>1</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- PLP -->
+    <tr>
+        <td><span class="name">PLP</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Pull processor status from stack</td>
+        <td>P &uarr;</td>
+        <td>Implied</td>
+        <td>PLP</td>
+        <td>28</td>
+        <td>1</td>
+        <td>From Stack</td>
+    </tr>
+    <!-- ROL -->
+    <tr>
+        <td><span class="name">ROL</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Rotate one bit left<br />(memory or accumulator)</td>
+        <td>(See Figure 3)</td>
+        <td>Accumulator<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X</td>
+        <td>ROL A<br />ROL Oper<br />ROL Oper,X<br />ROL Oper<br />ROL Oper,X</td>
+        <td>2A<br />26<br />36<br />2E<br />3E</td>
+        <td>1<br />2<br />2<br />3<br />3</td>
+        <td>&check; &check; &check; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- ROR -->
+    <tr>
+        <td><span class="name">ROR</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Rotate one bit right<br />(memory or accumulator)</td>
+        <td>(See Figure 4)</td>
+        <td>Accumulator<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X</td>
+        <td>ROR A<br />ROR Oper<br />ROR Oper,X<br />ROR Oper<br />ROR Oper,X</td>
+        <td>6A<br />66<br />76<br />6E<br />7E</td>
+        <td>1<br />2<br />2<br />3<br />3</td>
+        <td>&check; &check; &check; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- RTI -->
+    <tr>
+        <td><span class="name">RTI</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Return from interrupt</td>
+        <td>P &uarr;<br />PC &uarr;</td>
+        <td>Implied</td>
+        <td>RTI</td>
+        <td>40</td>
+        <td>1</td>
+        <td>From Stack</td>
+    </tr>
+    <!-- RTS -->
+    <tr>
+        <td><span class="name">RTS</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Return from subroutine</td>
+        <td>PC &uarr;<br />PC + 1 &rarr; PC</td>
+        <td>Implied</td>
+        <td>RTS</td>
+        <td>60</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- SBC -->
+    <tr>
+        <td><span class="name">SBC</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Subtract memory from accumulator with borrow</td>
+        <td>A - M - <span class="not">C</span> &rarr; A</td>
+        <td>Immediate<br />Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X<br />Absolute,Y<br />(Indirect,X)<br />(Indirect),Y</td>
+        <td>SBC #Oper<br />SBC Oper<br />SBC Oper,X<br />SBC Oper<br />SBC Oper,X<br />SBC Oper,Y<br />SBC (Oper,X)<br />SBC (Oper),Y</td>
+        <td>E9<br />E5<br />F5<br />ED<br />FD<br />F9<br />E1<br />F1</td>
+        <td>2<br />2<br />2<br />3<br />3<br />3<br />2<br />2</td>
+        <td>&check; &check; &check; &ndash; &ndash; &check;</td>
+    </tr>
+</table>
+
+
+
+<div class="page-break"><!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --></div>
+
+
+
+<table class="instructions">
+    <tr>
+        <th>Name<br />Description</th>
+        <th>Operation</th>
+        <th>Addressing<br />Mode</th>
+        <th>Assembly<br />Language<br />Form</th>
+        <th>HEX<br />OP<br />Code</th>
+        <th>No.<br />Bytes</th>
+        <th>"P" Status Reg.<br /><span>N Z C I D V</span></th>
+    </tr>
+    <!-- SEC -->
+    <tr>
+        <td><span class="name">SEC</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Set carry flag</td>
+        <td>1 &rarr; C</td>
+        <td>Implied</td>
+        <td>SEC</td>
+        <td>38</td>
+        <td>1</td>
+        <td>&ndash; &ndash; 1 &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- SED -->
+    <tr>
+        <td><span class="name">SED</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Set decimal mode</td>
+        <td>1 &rarr; D</td>
+        <td>Implied</td>
+        <td>SED</td>
+        <td>F8</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; &ndash; 1 &ndash;</td>
+    </tr>
+    <!-- SEI -->
+    <tr>
+        <td><span class="name">SEI</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Set interrupt disable status</td>
+        <td>1 &rarr; I</td>
+        <td>Implied</td>
+        <td>SEI</td>
+        <td>78</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; 1 &ndash; &ndash;</td>
+    </tr>
+    <!-- STA -->
+    <tr>
+        <td><span class="name">STA</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Store accumulator in memory</td>
+        <td>A &rarr; M</td>
+        <td>Zero Page<br />Zero Page,X<br />Absolute<br />Absolute,X<br />Absolute,Y<br />(Indirect,X)<br />(Indirect),Y</td>
+        <td>STA Oper<br />STA Oper,X<br />STA Oper<br />STA Oper,X<br />STA Oper,Y<br />STA (Oper,X)<br />STA (Oper),Y</td>
+        <td>85<br />95<br />8D<br />9D<br />99<br />81<br />91</td>
+        <td>2<br />2<br />3<br />3<br />3<br />2<br />2</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- STX -->
+    <tr>
+        <td><span class="name">STX</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Store index X in memory</td>
+        <td>X &rarr; M</td>
+        <td>Zero Page<br />Zero Page,Y<br />Absolute</td>
+        <td>STX Oper<br />STX Oper,Y<br />STX Oper</td>
+        <td>86<br />96<br />8E</td>
+        <td>2<br />2<br />3</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- STY -->
+    <tr>
+        <td><span class="name">STY</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Store index Y in memory</td>
+        <td>Y &rarr; M</td>
+        <td>Zero Page<br />Zero Page,X<br />Absolute</td>
+        <td>STY Oper<br />STY Oper,X<br />STY Oper</td>
+        <td>84<br />94<br />8C</td>
+        <td>2<br />2<br />3</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- TAX -->
+    <tr>
+        <td><span class="name">TAX</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Transfer accumulator to index X</td>
+        <td>A &rarr; X</td>
+        <td>Implied</td>
+        <td>TAX</td>
+        <td>AA</td>
+        <td>1</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- TAY -->
+    <tr>
+        <td><span class="name">TAY</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Transfer accumulator to index Y</td>
+        <td>A &rarr; Y</td>
+        <td>Implied</td>
+        <td>TAY</td>
+        <td>A8</td>
+        <td>1</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- TSX -->
+    <tr>
+        <td><span class="name">TSX</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Transfer stack pointer to index X</td>
+        <td>S &rarr; X</td>
+        <td>Implied</td>
+        <td>TSX</td>
+        <td>BA</td>
+        <td>1</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- TXA -->
+    <tr>
+        <td><span class="name">TXA</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Transfer index X to accumulator</td>
+        <td>X &rarr; A</td>
+        <td>Implied</td>
+        <td>TXA</td>
+        <td>8A</td>
+        <td>1</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- TXS -->
+    <tr>
+        <td><span class="name">TXS</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Transfer index X to stack pointer</td>
+        <td>X &rarr; S</td>
+        <td>Implied</td>
+        <td>TXS</td>
+        <td>9A</td>
+        <td>1</td>
+        <td>&ndash; &ndash; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+    <!-- TYA -->
+    <tr>
+        <td><span class="name">TYA</span></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>Transfer index Y to accumulator</td>
+        <td>Y &rarr; A</td>
+        <td>Implied</td>
+        <td>TYA</td>
+        <td>98</td>
+        <td>1</td>
+        <td>&check; &check; &ndash; &ndash; &ndash; &ndash;</td>
+    </tr>
+</table>
+
+
+
+<div class="page-break"><!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --></div>
+
+
+
+<table id="codes">
+    <tr><th colspan="12">HEX OPERATION CODES</th></tr>
+    <tr><td>00</td><td>BRK</td><td></td>            <td>40</td><td>RTI</td><td></td>            <td>80</td><td>   </td><td></td>            <td>C0</td><td>CPY</td><td>Immediate</td></tr>
+    <tr><td>01</td><td>ORA</td><td>(Indirect,X)</td><td>41</td><td>EOR</td><td>(Indirect,X)</td><td>81</td><td>STA</td><td>(Indirect,X)</td><td>C1</td><td>CMP</td><td>(Indirect,X)</td></tr>
+    <tr><td>02</td><td>   </td><td></td>            <td>42</td><td>   </td><td></td>            <td>82</td><td>   </td><td></td>            <td>C2</td><td>   </td><td></td></tr>
+    <tr><td>03</td><td>   </td><td></td>            <td>43</td><td>   </td><td></td>            <td>83</td><td>   </td><td></td>            <td>C3</td><td>   </td><td></td></tr>
+    <tr><td>04</td><td>   </td><td></td>            <td>44</td><td>   </td><td></td>            <td>84</td><td>STY</td><td>Zero Page</td>   <td>C4</td><td>CPY</td><td>Zero Page</td></tr>
+    <tr><td>05</td><td>ORA</td><td>Zero Page</td>   <td>45</td><td>EOR</td><td>Zero Page</td>   <td>85</td><td>STA</td><td>Zero Page</td>   <td>C5</td><td>CMP</td><td>Zero Page</td></tr>
+    <tr><td>06</td><td>ASL</td><td>Zero Page</td>   <td>46</td><td>LSR</td><td>Zero Page</td>   <td>86</td><td>STX</td><td>Zero Page</td>   <td>C6</td><td>DEC</td><td>Zero Page</td></tr>
+    <tr><td>07</td><td>   </td><td></td>            <td>47</td><td>   </td><td></td>            <td>87</td><td>   </td><td></td>            <td>C7</td><td>   </td><td></td></tr>
+    <tr><td>08</td><td>PHP</td><td></td>            <td>48</td><td>PHA</td><td></td>            <td>88</td><td>DEY</td><td></td>            <td>C8</td><td>INY</td><td></td></tr>
+    <tr><td>09</td><td>ORA</td><td>Immediate</td>   <td>49</td><td>EOR</td><td>Immediate</td>   <td>89</td><td>   </td><td></td>            <td>C9</td><td>CMP</td><td>Immediate</td></tr>
+    <tr><td>0A</td><td>ASL</td><td>Accumulator</td> <td>4A</td><td>LSR</td><td>Accumulator</td> <td>8A</td><td>TXA</td><td></td>            <td>CA</td><td>DEX</td><td></td></tr>
+    <tr><td>0B</td><td>   </td><td></td>            <td>4B</td><td>   </td><td></td>            <td>8B</td><td>   </td><td></td>            <td>CB</td><td>   </td><td></td></tr>
+    <tr><td>0C</td><td>   </td><td></td>            <td>4C</td><td>JMP</td><td>Absolute</td>    <td>8C</td><td>STY</td><td>Absolute</td>    <td>CC</td><td>CPY</td><td>Absolute</td></tr>
+    <tr><td>0D</td><td>ORA</td><td>Absolute</td>    <td>4D</td><td>EOR</td><td>Absolute</td>    <td>8D</td><td>STA</td><td>Absolute</td>    <td>CD</td><td>CMP</td><td>Absolute</td></tr>
+    <tr><td>0E</td><td>ASL</td><td>Absolute</td>    <td>4E</td><td>LSR</td><td>Absolute</td>    <td>8E</td><td>STX</td><td>Absolute</td>    <td>CE</td><td>DEC</td><td>Absolute</td></tr>
+    <tr><td>0F</td><td>   </td><td></td>            <td>4F</td><td>   </td><td></td>            <td>8F</td><td>   </td><td></td>            <td>CF</td><td>   </td><td></td></tr>
+
+    <tr><td>10</td><td>BPL</td><td></td>            <td>50</td><td>BVC</td><td></td>            <td>90</td><td>BCC</td><td></td>            <td>D0</td><td>BNE</td><td></td></tr>
+    <tr><td>11</td><td>ORA</td><td>(Indirect),Y</td><td>51</td><td>EOR</td><td>(Indirect),Y</td><td>91</td><td>STA</td><td>(Indirect),Y</td><td>D1</td><td>CMP</td><td>(Indirect),Y</td></tr>
+    <tr><td>12</td><td>   </td><td></td>            <td>52</td><td>   </td><td></td>            <td>92</td><td>   </td><td></td>            <td>D2</td><td>   </td><td></td></tr>
+    <tr><td>13</td><td>   </td><td></td>            <td>53</td><td>   </td><td></td>            <td>93</td><td>   </td><td></td>            <td>D3</td><td>   </td><td></td></tr>
+    <tr><td>14</td><td>   </td><td></td>            <td>54</td><td>   </td><td></td>            <td>94</td><td>STY</td><td>Zero Page,X</td> <td>D4</td><td>   </td><td></td></tr>
+    <tr><td>15</td><td>ORA</td><td>Zero Page,X</td> <td>55</td><td>EOR</td><td>Zero Page,X</td> <td>95</td><td>STA</td><td>Zero Page,X</td> <td>D5</td><td>CMP</td><td>Zero Page,X</td></tr>
+    <tr><td>16</td><td>ASL</td><td>Zero Page,X</td> <td>56</td><td>LSR</td><td>Zero Page,X</td> <td>96</td><td>STX</td><td>Zero Page,Y</td> <td>D6</td><td>DEC</td><td>Zero Page,X</td></tr>
+    <tr><td>17</td><td>   </td><td></td>            <td>57</td><td>   </td><td></td>            <td>97</td><td>   </td><td></td>            <td>D7</td><td>   </td><td></td></tr>
+    <tr><td>18</td><td>CLC</td><td></td>            <td>58</td><td>CLI</td><td></td>            <td>98</td><td>TYA</td><td></td>            <td>D8</td><td>CLD</td><td></td></tr>
+    <tr><td>19</td><td>ORA</td><td>Absolute,Y</td>  <td>59</td><td>EOR</td><td>Absolute,Y</td>  <td>99</td><td>STA</td><td>Absolute,Y</td>  <td>D9</td><td>CMP</td><td>Absolute,Y</td></tr>
+    <tr><td>1A</td><td>   </td><td></td>            <td>5A</td><td>   </td><td></td>            <td>9A</td><td>TXS</td><td></td>            <td>DA</td><td>   </td><td></td></tr>
+    <tr><td>1B</td><td>   </td><td></td>            <td>5B</td><td>   </td><td></td>            <td>9B</td><td>   </td><td></td>            <td>DB</td><td>   </td><td></td></tr>
+    <tr><td>1C</td><td>   </td><td></td>            <td>5C</td><td>   </td><td></td>            <td>9C</td><td>   </td><td></td>            <td>DC</td><td>   </td><td></td></tr>
+    <tr><td>1D</td><td>ORA</td><td>Absolute,X</td>  <td>5D</td><td>EOR</td><td>Absolute,X</td>  <td>9D</td><td>STA</td><td>Absolute,X</td>  <td>DD</td><td>CMP</td><td>Absolute,X</td></tr>
+    <tr><td>1E</td><td>ASL</td><td>Absolute,X</td>  <td>5E</td><td>LSR</td><td>Absolute,X</td>  <td>9E</td><td>   </td><td></td>            <td>DE</td><td>DEC</td><td>Absolute,X</td></tr>
+    <tr><td>1F</td><td>   </td><td></td>            <td>5F</td><td>   </td><td></td>            <td>9F</td><td>   </td><td></td>            <td>DF</td><td>   </td><td></td></tr>
+
+    <tr><td>20</td><td>JSR</td><td></td>            <td>60</td><td>RTI</td><td></td>            <td>A0</td><td>LDY</td><td>Immediate</td>   <td>E0</td><td>CPX</td><td>Immediate</td></tr>
+    <tr><td>21</td><td>AND</td><td>(Indirect,X)</td><td>61</td><td>ADC</td><td>(Indirect,X)</td><td>A1</td><td>LDA</td><td>(Indirect,X)</td><td>E1</td><td>SBC</td><td>(Indirect,X)</td></tr>
+    <tr><td>22</td><td>   </td><td></td>            <td>62</td><td>   </td><td></td>            <td>A2</td><td>LDX</td><td>Immediate</td>   <td>E2</td><td>   </td><td></td></tr>
+    <tr><td>23</td><td>   </td><td></td>            <td>63</td><td>   </td><td></td>            <td>A3</td><td>   </td><td></td>            <td>E3</td><td>   </td><td></td></tr>
+    <tr><td>24</td><td>BIT</td><td>Zero Page</td>   <td>64</td><td>   </td><td></td>            <td>A4</td><td>LDY</td><td>Zero Page</td>   <td>E4</td><td>CPX</td><td>Zero Page</td></tr>
+    <tr><td>25</td><td>AND</td><td>Zero Page</td>   <td>65</td><td>ADC</td><td>Zero Page</td>   <td>A5</td><td>LDA</td><td>Zero Page</td>   <td>E5</td><td>SBC</td><td>Zero Page</td></tr>
+    <tr><td>26</td><td>ROL</td><td>Zero Page</td>   <td>66</td><td>ROR</td><td>Zero Page</td>   <td>A6</td><td>LDX</td><td>Zero Page</td>   <td>E6</td><td>INC</td><td>Zero Page</td></tr>
+    <tr><td>27</td><td>   </td><td></td>            <td>67</td><td>   </td><td></td>            <td>A7</td><td>   </td><td></td>            <td>E7</td><td>   </td><td></td></tr>
+    <tr><td>28</td><td>PLP</td><td></td>            <td>68</td><td>PLA</td><td></td>            <td>A8</td><td>TAY</td><td></td>            <td>E8</td><td>INX</td><td></td></tr>
+    <tr><td>29</td><td>AND</td><td>Immediate</td>   <td>69</td><td>ADC</td><td>Immediate</td>   <td>A9</td><td>LDA</td><td>Immediate</td>   <td>E9</td><td>SBC</td><td>Immediate</td></tr>
+    <tr><td>2A</td><td>ROL</td><td>Accumulator</td> <td>6A</td><td>ROR</td><td>Accumulator</td> <td>AA</td><td>TAX</td><td></td>            <td>EA</td><td>NOP</td><td></td></tr>
+    <tr><td>2B</td><td>   </td><td></td>            <td>6B</td><td>   </td><td></td>            <td>AB</td><td>   </td><td></td>            <td>EB</td><td>   </td><td></td></tr>
+    <tr><td>2C</td><td>BIT</td><td>Absolute</td>    <td>6C</td><td>JMP</td><td>Indirect</td>    <td>AC</td><td>LDY</td><td>Absolute</td>    <td>EC</td><td>CPX</td><td>Absolute</td></tr>
+    <tr><td>2D</td><td>AND</td><td>Absolute</td>    <td>6D</td><td>ADC</td><td>Absolute</td>    <td>AD</td><td>LDA</td><td>Absolute</td>    <td>ED</td><td>SBC</td><td>Absolute</td></tr>
+    <tr><td>2E</td><td>ROL</td><td>Absolute</td>    <td>6E</td><td>ROR</td><td>Absolute</td>    <td>AE</td><td>LDX</td><td>Absolute</td>    <td>EE</td><td>INC</td><td>Absolute</td></tr>
+    <tr><td>2F</td><td>   </td><td></td>            <td>6F</td><td>   </td><td></td>            <td>AF</td><td>   </td><td></td>            <td>EF</td><td>   </td><td></td></tr>
+
+    <tr><td>30</td><td>BMI</td><td></td>            <td>70</td><td>BVS</td><td></td>            <td>B0</td><td>BCS</td><td></td>            <td>F0</td><td>BEQ</td><td></td></tr>
+    <tr><td>31</td><td>AND</td><td>(Indirect),Y</td><td>71</td><td>ADC</td><td>(Indirect),Y</td><td>B1</td><td>LDA</td><td>(Indirect),Y</td><td>F1</td><td>SBC</td><td>(Indirect),Y</td></tr>
+    <tr><td>32</td><td>   </td><td></td>            <td>72</td><td>   </td><td></td>            <td>B2</td><td>   </td><td></td>            <td>F2</td><td>   </td><td></td></tr>
+    <tr><td>33</td><td>   </td><td></td>            <td>73</td><td>   </td><td></td>            <td>B3</td><td>   </td><td></td>            <td>F3</td><td>   </td><td></td></tr>
+    <tr><td>34</td><td>   </td><td></td>            <td>74</td><td>   </td><td></td>            <td>B4</td><td>LDY</td><td>Zero Page,X</td> <td>F4</td><td>   </td><td></td></tr>
+    <tr><td>35</td><td>AND</td><td>Zero Page,X</td> <td>75</td><td>ADC</td><td>Zero Page,X</td> <td>B5</td><td>LDA</td><td>Zero Page,X</td> <td>F5</td><td>SBC</td><td>Zero Page,X</td></tr>
+    <tr><td>36</td><td>ROL</td><td>Zero Page,X</td> <td>76</td><td>ROR</td><td>Zero Page,X</td> <td>B6</td><td>LDX</td><td>Zero Page,Y</td> <td>F6</td><td>INC</td><td>Zero Page,X</td></tr>
+    <tr><td>37</td><td>   </td><td></td>            <td>77</td><td>   </td><td></td>            <td>B7</td><td>   </td><td></td>            <td>F7</td><td>   </td><td></td></tr>
+    <tr><td>38</td><td>SEC</td><td></td>            <td>78</td><td>SEI</td><td></td>            <td>B8</td><td>CLV</td><td></td>            <td>F8</td><td>SED</td><td></td></tr>
+    <tr><td>39</td><td>AND</td><td>Absolute,Y</td>  <td>79</td><td>ADC</td><td>Absolute,Y</td>  <td>B9</td><td>LDA</td><td>Absolute,Y</td>  <td>F9</td><td>SBC</td><td>Absolute,Y</td></tr>
+    <tr><td>3A</td><td>   </td><td></td>            <td>7A</td><td>   </td><td></td>            <td>BA</td><td>TSX</td><td></td>            <td>FA</td><td>   </td><td></td></tr>
+    <tr><td>3B</td><td>   </td><td></td>            <td>7B</td><td>   </td><td></td>            <td>BB</td><td>   </td><td></td>            <td>FB</td><td>   </td><td></td></tr>
+    <tr><td>3C</td><td>   </td><td></td>            <td>7C</td><td>   </td><td></td>            <td>BC</td><td>LDY</td><td>Absolute,X</td>  <td>FC</td><td>   </td><td></td></tr>
+    <tr><td>3D</td><td>AND</td><td>Absolute,X</td>  <td>7D</td><td>ADC</td><td>Absolute,X</td>  <td>BD</td><td>LDA</td><td>Absolute,X</td>  <td>FD</td><td>SBC</td><td>Absolute,X</td></tr>
+    <tr><td>3E</td><td>ROL</td><td>Absolute,X</td>  <td>7E</td><td>ROR</td><td>Absolute,X</td>  <td>BE</td><td>LDX</td><td>Absolute,Y</td>  <td>FE</td><td>INC</td><td>Absolute,X</td></tr>
+    <tr><td>3F</td><td>   </td><td></td>            <td>7F</td><td>   </td><td></td>            <td>BF</td><td>   </td><td></td>            <td>FF</td><td>   </td><td></td></tr>
+</table>
+</body>
+</html>
