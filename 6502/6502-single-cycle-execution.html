@@ -7,14 +7,16 @@
 body { font-family: monospace; font-size: 12px; width: 190mm; margin: 12mm; padding: 0; }
 
 dl { margin-top: 2em; width: 190mm; }
-dt { font-style: italic; font-weight: bold; }
+dt { font-style: oblique; font-weight: bold; }
 dd { margin-bottom: 1em; }
 
 h2 { font-size: 1.50em; margin: 2em 0; text-align: center; }
-h3 { font-size: 1.20em; margin-top: 2em; }
+h3 { font-size: 1.15em; margin-top: 2em; }
+h3+h3 { margin-top: 1em; }
 h3 > span { text-decoration: underline; }
 
-ol { font-style: italic; margin-right: 15mm; }
+ol { margin-right: 15mm; }
+li span { font-style: italic; }
 
 p { width: 190mm; }
 p:before { content: "     "; white-space: pre; }
@@ -25,13 +27,13 @@ th, td { text-align: left; vertical-align: top; }
 .header { text-align: center; }
 .header p { text-indent: initial; }
 
-.div-table { margin-left: 0; width: 190mm; }
+.div-table { margin: 0 0 3em 0; width: 190mm; }
 .div-table dt { display: inline-block; }
 .div-table dd { display: inline-block; }
 
 .table-inst td { text-align: center; width: 40mm; }
 .table-cycles th { text-decoration: underline; }
-.table-cycles th, .table-cycles td { padding: 0; }
+.table-cycles th, .table-cycles td { padding: 0.45em 0; }
 .table-cycles th:nth-child(4) { text-align: center; }
 .table-cycles td:nth-child(4) { text-align: center; }
 .table-cycles tr:nth-child(odd) { background-color: #F8F8FF; }
@@ -70,7 +72,7 @@ th, td { text-align: left; vertical-align: top; }
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h2>APPENDIX A</h2>
 <h2>SUMMARY OF SINGLE-CYCLE EXECUTION</h2>
 <p>
@@ -127,7 +129,7 @@ Jump instruction.</dd>
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  1.      <span>SINGLE-BYTE INSTRUCTIONS</span></h3>
 <div class="div-table">
 <table class="table-inst">
@@ -162,7 +164,7 @@ LSR, ROL and ROR instructions apply to the accumulator mode of address.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  2.      <span>INTERNAL EXECUTION ON MEMORY DATA</span></h3>
 <div class="div-table">
 <table class="table-inst">
@@ -183,7 +185,7 @@ the next instruction.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  2.1.    <span>Immediate Addressing (2 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -200,7 +202,7 @@ the next instruction.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  2.2.    <span>Zero Page Addressing (3 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -218,7 +220,7 @@ the next instruction.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  2.3.    <span>Absolute Addressing (4 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -237,7 +239,7 @@ the next instruction.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  2.4.    <span>Indirect, X Addressing (6 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -258,7 +260,7 @@ the next instruction.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  2.5.    <span>Absolute, X or Absolute, Y Addressing (4 or 5 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -275,13 +277,13 @@ the next instruction.
 </tbody>
 </table>
 <ol type="a">
-<li>If the page boundary is crossed in the indexing operation, the data fetched in T3 is ignored. If page boundary is not crossed, the T4 cycle is bypassed.</li>
+<li><span>If the page boundary is crossed in the indexing operation, the data fetched in T3 is ignored. If page boundary is not crossed, the T4 cycle is bypassed.</span></li>
 </ol>
 </div>
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  2.6.    <span>Zero Page, X or Zero Page, Y Addressing Modes (4 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -300,7 +302,7 @@ the next instruction.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  2.7.    <span>Indirect, Y Addressing Mode (5 or 6 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -318,13 +320,13 @@ the next instruction.
 </tbody>
 </table>
 <ol type="a">
-<li>If the page boundary is crossed in the indexing operation, the data fetched in T4 is ignored. If page boundary is not crossed, the T5 cycle is bypassed.</li>
+<li><span>If the page boundary is crossed in the indexing operation, the data fetched in T4 is ignored. If page boundary is not crossed, the T5 cycle is bypassed.</span></li>
 </ol>
 </div>
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  3.      <span>STORE OPERATAIONS</span></h3>
 <div class="div-table">
 <table class="table-inst">
@@ -343,7 +345,7 @@ on indexing operations.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  3.1.    <span>Zero Page Addressing (3 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -361,7 +363,7 @@ on indexing operations.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  3.2.    <span>Absolute Addressing (4 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -380,7 +382,7 @@ on indexing operations.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  3.3.    <span>Indirect, X Addressing (6 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -401,7 +403,7 @@ on indexing operations.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  3.4.    <span>Absolute, X or Absolute, Y Addressing (5 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -421,7 +423,7 @@ on indexing operations.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  3.5.    <span>Zero Page, X or Zero Page, Y Addressing Modes (4 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -440,7 +442,7 @@ on indexing operations.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  3.6.    <span>Indirect, Y Addressing Mode (6 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -461,7 +463,7 @@ on indexing operations.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  4.      <span>READ -- MODIFY -- WRITE OPERATAIONS</span></h3>
 <div class="div-table">
 <table class="table-inst">
@@ -478,7 +480,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  4.1.    <span>Zero Page Addressing (5 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -498,7 +500,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  4.2.    <span>Absolute Addressing (6 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -519,7 +521,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  4.3.    <span>Zero Page, X Addressing (6 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -540,7 +542,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  4.4.    <span>Absolute, X Addressing (7 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -562,7 +564,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  5.      <span>MISCELLANEOUS OPERATIONS</span></h3>
 <div class="div-table">
 <table class="table-inst">
@@ -577,7 +579,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  5.1.    <span>Push Operations -- PHP, PHA (3 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -595,7 +597,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  5.2.    <span>Pull Operations -- PLP, PLA (4 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -614,7 +616,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  5.3.    <span>Jump to Subroutine -- JSR (6 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -635,7 +637,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  5.4.    <span>Break Operation -- (Hardware Interrupt)-BRK (7 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -657,7 +659,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  5.5.    <span>Return from Interrupt -- RTI (6 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -678,7 +680,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  5.6.    <span>Jump Operation -- JMP</span></h3>
 <h3>A.  5.6.1   <span>Absolute Addressing Mode (3 Cycles)</span></h3>
 <div class="div-table">
@@ -697,7 +699,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  5.6.2   <span>Indirect Addressing Mode (5 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -717,7 +719,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  5.7.    <span>Return from Subroutine -- RTS (6 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -738,7 +740,7 @@ modified data being stored in the original location.
 </div>
 
 
-<div class="div-chunk">
+<div>
 <h3>A.  5.8.    <span>Branch Operation -- BCC, BCS, BEQ, BMI, BNE, BPL, BVC, BVS (2, 3, or 4 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
@@ -753,11 +755,10 @@ modified data being stored in the original location.
 </tbody>
 </table>
 <ol type="a">
-<li>Skip if branch not taken.</li>
-<li>Skip if branch not taken; skip if branch operation does not cross page boundary.</li>
+<li><span>Skip if branch not taken.</span></li>
+<li><span>Skip if branch not taken; skip if branch operation does not cross page boundary.</span></li>
 </ol>
 </div>
 </div>
-
 </body>
 </html>
