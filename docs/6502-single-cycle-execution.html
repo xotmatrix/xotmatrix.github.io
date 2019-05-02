@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>R6500 - Summary of Single-Cycle Execution</title>
+<style>
+body { font-family: monospace; font-size: 16px; width: 1064px; }
+
+h2 { margin: 2em 0; text-align: center; }
+h3 { margin-top: 2em; }
+h3 > span { text-decoration: underline; }
+
+p { text-indent: 64px; width: 1064px; }
+
+dl { margin-top: 2em; width: 1000px; }
+dt { font-style: italic; font-weight: bold; }
+dd { margin-bottom: 1em; }
+
+table { border-collapse: collapse; font-size: inherit; margin-bottom: 1em; width: 100%; }
+th, td { text-align: left; vertical-align: top; }
+
+.header { text-align: center; }
+.header p { text-indent: initial; }
+
+.div-table { margin-left: 64px; width: 1000px; }
+.div-table dt { display: inline-block; }
+.div-table dd { display: inline-block; }
+
+.table-inst td { width: 192px; }
+.table-cycles th { text-decoration: underline; }
+.table-cycles th, td { padding: 4px; }
+.table-cycles th:nth-child(4) { text-align: center; }
+.table-cycles td:nth-child(4) { text-align: center; }
+.table-cycles tr:nth-child(odd) { background-color: #F8F8FF; }
+.table-cycles tr:nth-child(even) { background-color: #F0F0F8; }
+.table-cycles thead tr:first-child { background-color: #E8E8EF; }
+
+.table-step { width:  30px; }
+.table-abus { width: 240px; }
+.table-dbus { width: 180px; }
+.table-rw   { width:  40px; text-align: center; }
+.table-comm { width: 510px; }
+
+@media print {
+    div { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+
+<svg width="196.20651mm" height="35.200012mm" viewBox="0 0 196.20651 35.200012" version="1.1">
+<g transform="translate(-1.3601561,-1.6221307)">
+<path d="M 1.3601561,36.39442 V 2.0498838 H 23.853039 q 7.922867,0.025156 9.489532,0.2012852 1.56667,0.1509638 3.021432,1.1573984 1.745716,1.1825592 2.394767,3.2709077 0.649048,2.0631886 0.649048,6.5166559 0,3.748964 -0.425239,5.510221 -0.402863,1.761259 -1.544289,2.818014 -1.230953,1.132238 -3.71524,1.559972 2.931907,0.251606 4.207622,1.887062 0.738572,0.981273 0.940004,2.390279 0.201431,1.383846 0.201431,5.837315 v 3.195426 h -9.176203 v -1.836742 q 0,-2.868334 -0.201431,-4.076056 -0.179046,-1.232879 -0.693809,-1.88706 -0.514763,-0.60386 -1.432386,-0.754826 -0.895236,-0.176125 -3.782382,-0.176125 H 10.670643 V 36.39442 Z M 10.670643,19.083767 h 13.092872 q 3.42429,-0.07549 4.073338,-0.125808 0.671429,-0.07549 1.14143,-0.402574 0.604286,-0.427736 0.850475,-1.258043 0.246184,-0.855468 0.246184,-2.566404 0,-1.685776 -0.290936,-2.516083 -0.268562,-0.830304 -0.96238,-1.207716 -0.492383,-0.251606 -1.186192,-0.301928 -0.671432,-0.05032 -3.894292,-0.07548 H 10.670643 Z" />
+<path d="m 82.944222,11.636161 h -8.7062 Q 74.170896,10.40328 73.74564,10.051028 73.38753,9.7742563 72.850403,9.6987744 72.335639,9.598132 70.366116,9.4974894 67.322299,9.3465255 64.972297,9.3465255 q -6.266671,0 -7.855722,0.7548245 -0.783332,0.352254 -1.096667,1.459329 -0.290938,1.107076 -0.290938,3.698643 0,0.704502 0.02234,1.937383 1.768097,-1.912224 4.050957,-2.465761 2.305236,-0.578699 8.325722,-0.578699 9.019531,0 11.794773,2.13867 2.797624,2.138671 2.797624,9.0579 0,5.15797 -1.119049,7.397282 -0.87286,1.710938 -2.417145,2.566405 -1.521909,0.855471 -4.297151,1.182559 -2.976669,0.327075 -11.570961,0.327075 -7.027627,0 -10.295252,-0.75483 -4.700005,-1.107072 -5.617626,-6.013436 -0.313314,-1.811579 -0.42524,-4.126376 -0.111932,-2.339957 -0.111932,-7.825019 0,-4.302502 0.111932,-6.164403 0.11192,-1.887063 0.447616,-3.5728387 0.760955,-3.7992857 3.558575,-5.0824878 3.580961,-1.6606148 14.860972,-1.6606148 8.683819,0 12.264774,0.8303071 3.916669,0.8806295 4.543341,4.7050757 0.246183,1.5851326 0.290936,4.4786285 z M 63.696583,21.876619 q -5.21477,0 -6.22191,0.452897 -1.58905,0.704503 -1.58905,3.170264 0,1.434168 0.380487,2.239315 0.402863,0.779985 1.275719,1.031594 1.096668,0.327093 5.908576,0.327093 5.908579,0 7.990008,-0.251606 1.230953,-0.125807 1.745716,-0.88063 0.514763,-0.779985 0.514763,-2.415439 0,-1.660615 -0.492383,-2.415441 -0.49239,-0.779991 -1.656201,-0.981277 -1.790478,-0.276767 -7.855725,-0.27677 z" />
+<path d="M 84.554125,2.0498838 H 118.55083 V 9.4471682 H 98.654136 Q 93.66318,9.4723239 92.723183,9.1955616 v 3.6734814 q 0,1.635454 -0.06714,2.566404 1.454765,-1.509649 2.820003,-1.912223 2.305246,-0.679342 9.086684,-0.679342 9.69097,0 12.42144,1.987706 1.58905,1.157399 2.28286,3.346391 0.71619,2.163831 0.71619,5.937956 0,4.956683 -0.93999,7.523089 -0.94001,2.566405 -3.15573,3.648318 -1.83523,0.930954 -4.27476,1.23288 -2.43953,0.301919 -7.78858,0.301919 -6.982873,0 -10.116211,-0.201295 -3.133335,-0.201296 -5.416196,-0.779986 -2.663337,-0.679341 -3.804768,-2.667047 -1.119044,-2.012866 -1.119044,-6.038598 0,-0.377415 0.02234,-1.358685 h 8.862866 q 0.06714,1.962546 0.559525,2.516083 0.514763,0.528377 2.394765,0.754825 1.902376,0.201285 6.132383,0.201285 4.90144,0 6.26668,-0.07549 1.36524,-0.07549 2.10381,-0.402575 0.71619,-0.327095 0.98477,-1.258043 0.26855,-0.93095 0.26855,-3.069621 0,-1.937384 -0.40286,-2.717369 -0.40286,-0.779987 -1.52191,-1.031595 -2.48428,-0.503216 -9.690967,-0.503216 -4.073332,0 -5.371427,0.452897 -1.275716,0.427735 -1.275716,1.786417 0,0.125808 0.02234,0.427737 h -8.169057 z" />
+<path d="m 139.58588,1.6473106 q 8.72858,0 12.33192,0.6038598 4.09572,0.6541817 5.68477,3.9754116 0.80572,1.6606149 0.98477,3.698642 0.17905,2.038028 0.17905,9.284347 0,5.686348 -0.0671,7.27148 -0.0447,1.559972 -0.29094,3.069622 -0.60428,3.849606 -3.49142,5.560545 -1.1862,0.704502 -2.82,1.056756 -1.61144,0.327074 -4.58811,0.452901 -3.58095,0.17614 -7.90048,0.17614 -8.75097,0 -12.3543,-0.603856 -4.09572,-0.679342 -5.68477,-3.975411 -0.80571,-1.685777 -0.98476,-3.723805 -0.17905,-2.06319 -0.17905,-9.737242 0,-5.233454 0.0448,-6.793425 0.0671,-1.585132 0.31332,-3.0696213 0.60428,-3.8747683 3.49142,-5.5605436 1.18619,-0.7296641 2.79764,-1.056755 1.6338,-0.3270932 4.61048,-0.4528964 3.51381,-0.1761246 7.92285,-0.1761246 z m -0.55952,8.9320954 q -6.3562,0 -7.74381,0.930951 -0.89524,0.60386 -1.23096,2.239314 -0.33573,1.635453 -0.33573,5.308935 0,4.252181 0.38048,5.887634 0.40287,1.610294 1.54429,2.188994 0.80572,0.402573 1.83524,0.528377 1.05191,0.100639 5.50572,0.201285 5.70716,-0.125807 6.58001,-0.226446 2.50667,-0.301934 3.20048,-1.786418 0.69381,-1.509651 0.69381,-6.642461 0,-4.076055 -0.40287,-5.686348 -0.38049,-1.635454 -1.52189,-2.214153 -0.85049,-0.427736 -1.94716,-0.528377 -1.07428,-0.100643 -6.55762,-0.201285 z" />
+<path d="m 178.38616,1.6473106 q 8.72858,0 12.33192,0.6038598 4.09571,0.6541817 5.68477,3.9754116 0.80571,1.6606149 0.98476,3.698642 0.17906,2.038028 0.17906,9.284347 0,5.686348 -0.0671,7.27148 -0.0447,1.559972 -0.29093,3.069622 -0.60428,3.849606 -3.49143,5.560545 -1.1862,0.704502 -2.82001,1.056756 -1.61143,0.327074 -4.58809,0.452901 -3.58096,0.17614 -7.90048,0.17614 -8.75097,0 -12.35431,-0.603856 -4.09572,-0.679342 -5.68477,-3.975411 -0.80572,-1.685777 -0.98476,-3.723805 -0.17905,-2.06319 -0.17905,-9.737242 0,-5.233454 0.0447,-6.793425 0.0671,-1.585132 0.31336,-3.0696213 0.60428,-3.8747683 3.49142,-5.5605436 1.1862,-0.7296641 2.79763,-1.056755 1.6338,-0.3270932 4.61048,-0.4528964 3.51382,-0.1761246 7.92287,-0.1761246 z m -0.55953,8.9320954 q -6.3562,0 -7.74381,0.930951 -0.89524,0.60386 -1.23095,2.239314 -0.33574,1.635453 -0.33574,5.308935 0,4.252181 0.38048,5.887634 0.40287,1.610294 1.54429,2.188994 0.80572,0.402573 1.83525,0.528377 1.0519,0.100639 5.50572,0.201285 5.70714,-0.125807 6.57999,-0.226446 2.50668,-0.301934 3.20049,-1.786418 0.69381,-1.509651 0.69381,-6.642461 0,-4.076055 -0.40286,-5.686348 -0.38049,-1.635454 -1.52191,-2.214153 -0.85047,-0.427736 -1.94714,-0.528377 -1.07429,-0.100643 -6.55763,-0.201285 z" />
+</g>
+</svg>
+
+<h1>R6500 Microcomputer System Hardware Manual</h1>
+<p>Document No. 29650 N31</p>
+<p>Rev. 1 August 1978</p>
+<p>copyright &copy; 1978, Rockwell International Corporation</p>
+</div>
+
+
+<div class="div-chunk">
+<h2>APPENDIX A</h2>
+<h2>SUMMARY OF SINGLE-CYCLE EXECUTION</h2>
+<p>
+This section contains an outline o£ the data on both the address bus and
+the data bus for each cycle of the various processor instructions. It tells
+the system designer exactly what to expect while single-cycling through a
+program.
+</p>
+<p>
+Note that the processor will not stop in any cycle where R/W is a 0 (WRITE
+cycle). Instead, it will go right into the next READ cycle and stop there. For
+this reason, some instructions may appear to be shorter than indicated here.
+</p>
+<p>
+All Instructions begin with T0 and the fetch of the OP CODE and continue
+through the required number of cycles until the next T0 and the fetch of the
+next OP CODE.
+</p>
+<p>
+While the basic terminology used in this appendix is discussed in the Programming
+Manual, it has been defined below for ease of reference while studying
+Single-Cycle Execution.
+</p>
+
+<dl>
+<dt>OP CODE</dt>
+<dd>The first byte of the instruction containing the operator and mode of address.</dd>
+
+<dt>OPERAND</dt>
+<dd>The data on which the operation specified In the OP CODE is pertormed.</dd>
+
+<dt>BASE ADDRESS</dt>
+<dd>The address in Indexed addressing modes which specifies the location in memory
+to which indexing is referenced. The high-order byte of the base address (AB08&nbsp;to&nbsp;AB15)
+is BAH (Base Address High) and the low-order byte of the base address (AB00&nbsp;to&nbsp;AB07)
+is BAL (Base Address Low).</dd>
+
+<dt>EFFECTIVE ADDRESS</dt>
+<dd>The destination in memory in which data are to be found. The
+effective address may be loaded directly as in the case of Page Zero
+and Absolute Addressing or may be calculated as in Indexing operations.
+The high-order byte of the effective address (AB08&nbsp;to&nbsp;AB15) is ADH and
+the low-order byte of the effective address (AB00&nbsp;to&nbsp;AB07) is ADL.</dd>
+
+<dt>INDIRECT ADDRESS</dt>
+<dd>The address found in the operand of instructions utilizing
+(Indirect),Y which contains the low-order byte of the base address.
+IAH and IAL represent the high- and low-order bytes.</dd>
+
+<dt>JUMP ADDRESS</dt>
+<dd>The value to be loaded into Program Counter as a result of a
+Jump instruction.</dd>
+</dl>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  1.      <span>SINGLE-BYTE INSTRUCTIONS</span></h3>
+<div class="div-table">
+<table class="table-inst">
+<tr><td>ASL</td><td>DEX</td><td>NOP</td><td>TAX</td><td>TYA</td></tr>
+<tr><td>CLC</td><td>DEY</td><td>ROL</td><td>TAY</td><td>   </td></tr>
+<tr><td>   </td><td>   </td><td>ROR</td><td>   </td><td>   </td></tr>
+<tr><td>CLD</td><td>INX</td><td>SEC</td><td>TSX</td><td>   </td></tr>
+<tr><td>CLI</td><td>INY</td><td>SED</td><td>TXA</td><td>   </td></tr>
+<tr><td>CLV</td><td>LSR</td><td>SEI</td><td>TXS</td><td>   </td></tr>
+</table>
+</div>
+<p>
+These single-byte instructions require two cycles to execute. During the
+second cycle the address of the next instruction in program sequence will be
+placed on the address bus. However, the OP CODE which appears on the data bus
+during the second cycle will be ignored. This same instruction will be fetched
+on the following cycle, at which time it will ba decoded and executed. The ASL,
+LSR, ROL and ROR instructions apply to the accumulator mode of address.
+</p>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>OP CODE (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T0</td><td>PC + 1</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  2.      <span>INTERNAL EXECUTION ON MEMORY DATA</span></h3>
+<div class="div-table">
+<table class="table-inst">
+<tr><td>ADC</td><td>CMP</td><td>EOR</td><td>LDY</td><td></td></tr>
+<tr><td>AND</td><td>CPX</td><td>LDA</td><td>ORA</td><td></td></tr>
+<tr><td>BIT</td><td>CPY</td><td>LDX</td><td>SBC</td><td></td></tr>
+</table>
+</div>
+<p>
+The instructions listed above will execute by performing operations inside
+the microprocessor using data fetched from the effective address. This
+total operation requires three steps. The first step (one cycle) is the OP CODE
+fetch. The second (zero to four cycles) Is the calculation of an effective
+address. The final step is the fetching of the data from the effective address.
+Execution of the instruction takes place during the fetching and decoding of
+the next instruction.
+</p>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  2.1.    <span>Immediate Addressing (2 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>Data</td><td>1</td><td>Fetch Data</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  2.2.    <span>Zero Page Addressing (3 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>ADL</td><td>1</td><td>Fetch Effective Address</td></tr>
+<tr><td>T2</td><td>00, ADL</td><td>Data</td><td>1</td><td>Fetch Data</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  2.3.    <span>Absolute Addressing (4 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>ADL</td><td>1</td><td>Fetch Low-Order Effective Address Byte</td></tr>
+<tr><td>T2</td><td>PC + 2</td><td>ADH</td><td>1</td><td>Fetch High-Order Effective Address Byte</td></tr>
+<tr><td>T3</td><td>ADH, ADL</td><td>Data</td><td>1</td><td>Fetch Data</td></tr>
+<tr><td>T0</td><td>PC + 3</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  2.4.    <span>Indirect, X Addressing (6 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>BAL</td><td>1</td><td>Fetch Page Zero Base Address</td></tr>
+<tr><td>T2</td><td>00, BAL</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T3</td><td>00, BAL + X</td><td>ADL</td><td>1</td><td>Fetch Low-Order Byte of Effective Address</td></tr>
+<tr><td>T4</td><td>00, BAL + X + 1</td><td>ADH</td><td>1</td><td>Fetch High-Order Byte of Effective Address</td></tr>
+<tr><td>T5</td><td>ADH, ADL</td><td>Data</td><td>1</td><td>Fetch Data</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  2.5.    <span>Absolute, X or Absolute, Y Addressing (4 or 5 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>BAL</td><td>1</td><td>Fetch Low-Order Byte of Base Address</td></tr>
+<tr><td>T2</td><td>PC + 2</td><td>BAH</td><td>1</td><td>Fetch High-Order Byte of Base Address</td></tr>
+<tr><td>T3</td><td>ADL: BAL + Index Register<br />ADH: BAH + C</td><td>Data<sup>*</sup></td><td>1</td><td>Fetch Data (No Page Crossing)<br />Carry is 0 or 1 as Required from Previous Add Operation</td></tr>
+<tr><td>T4<sup>*</sup></td><td>ADL: BAL + Index Register<br />ADH: BAH + 1</td><td>Data</td><td>1</td><td>Fetch Data from Next Page</td></tr>
+<tr><td>T0</td><td>PC + 3</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+* If the page boundary is crossed in the indexing operation, the data fetched in T3 is ignored. If page boundary is not crossed, the T4 cycle is bypassed.
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  2.6.    <span>Zero Page, X or Zero Page, Y Addressing Modes (4 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>BAL</td><td>1</td><td>Fetch Page Zero Base Address</td></tr>
+<tr><td>T2</td><td>00, BAL</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T3</td><td>00, BAL + Index Register</td><td>Data</td><td>1</td><td>Fetch Data (No Page Crossing)</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  2.7.    <span>Indirect, Y Addressing Mode (5 or 6 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>IAL</td><td>1</td><td>Fetch Page Zero Indirect Address</td></tr>
+<tr><td>T2</td><td>00, IAL</td><td>BAL</td><td>1</td><td>Fetch Low-Order Byte of Base Address</td></tr>
+<tr><td>T3</td><td>00. IAL + 1</td><td>BAH</td><td>1</td><td>Fetch High-Order Byte of Base Address</td></tr>
+<tr><td>T4</td><td>ADL: BAL + Y<br />ADH: BAH + C</td><td>Data<sup>*</sup></td><td>1</td><td>Fetch Data from Same Page<br />Carry is 0 or 1 as Required from Previous Add Operation</td></tr>
+<tr><td>T5<sup>*</sup></td><td>ADL: BAL + Y<br />ADH: BAH + 1</td><td>Data</td><td>1</td><td>Fetch Data from Next Page</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+* <em>If the page boundary is crossed in the indexing operation, the data fetched in T4 is ignored. If page boundary is not crossed, the T5 cycle is bypassed.</em>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  3.      <span>STORE OPERATAIONS</span></h3>
+<div class="div-table">
+<table class="table-inst">
+<tr><td>STA</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>STX</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>STY</td><td></td><td></td><td></td><td></td></tr>
+</table>
+</div>
+<p>
+The specific steps taken in the Store Operations are very similar to
+those taken in the previous group (internal execution on memory data). However,
+in the Store Operation, the fetch of data is replaced by a WRITE (R/W&nbsp;=&nbsp;0)
+cycle. No overlapping occurs and no shortening of the instruction time occurs
+on indexing operations.
+</p>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  3.1.    <span>Zero Page Addressing (3 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>ADL</td><td>1</td><td>Fetch Zero Page Effective Address</td></tr>
+<tr><td>T2</td><td>00, ADL</td><td>Data</td><td>0</td><td>Write Internal Register to Memory</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  3.2.    <span>Absolute Addressing (4 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>ADL</td><td>1</td><td>Fetch Low-Order Byte of Effective Address</td></tr>
+<tr><td>T2</td><td>PC + 2</td><td>ADH</td><td>1</td><td>Fetch High-Order Byte of Effective Address</td></tr>
+<tr><td>T3</td><td>ADH, ADL</td><td>Data</td><td>0</td><td>Write Internal Register to Memory</td></tr>
+<tr><td>T0</td><td>PC + 3</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  3.3.    <span>Indirect, X Addressing (6 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>BAL</td><td>1</td><td>Fetch Page Zero Base Address</td></tr>
+<tr><td>T2</td><td>00, BAL</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T3</td><td>00, BAL + X</td><td>ADL</td><td>1</td><td>Fetch Low-Order Byte of Effective Address</td></tr>
+<tr><td>T4</td><td>00, BAL + X + 1</td><td>ADH</td><td>1</td><td>Fetch High-Order Byte of Effective Address</td></tr>
+<tr><td>T5</td><td>ADH, ADL</td><td>Data</td><td>0</td><td>Write Internal Register to Memory</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  3.4.    <span>Absolute, X or Absolute, Y Addressing (5 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>BAL</td><td>1</td><td>Fetch Low-Order Byte of Base Address</td></tr>
+<tr><td>T2</td><td>PC + 2</td><td>BAH</td><td>1</td><td>Fetch High-Order Byte of Base Address</td></tr>
+<tr><td>T3</td><td>ADL: BAL + Index Register<br />ADH: BAH + C</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T4</td><td>ADH, ADL</td><td>Data</td><td>0</td><td>Write Internal Register to Memory</td></tr>
+<tr><td>T0</td><td>PC + 3</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  3.5.    <span>Zero Page, X or Zero Page, Y Addressing Modes (4 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>BAL</td><td>1</td><td>Fetch Page Zero Base Address</td></tr>
+<tr><td>T2</td><td>00, BAL</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T3</td><td>ADL: BAL + Index Register</td><td>Data</td><td>0</td><td>Write Internal Register to Memory</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  3.6.    <span>Indirect, Y Addressing Mode (6 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>IAL</td><td>1</td><td>Fetch Page Zero Indirect Address</td></tr>
+<tr><td>T2</td><td>00, IAL</td><td>BAL</td><td>1</td><td>Fetch Low-Order Byte of Base Address</td></tr>
+<tr><td>T3</td><td>00, IAL + 1</td><td>BAH</td><td>1</td><td>Fetch High-Order Byte of Base Address</td></tr>
+<tr><td>T4</td><td>ADL: BAL + Y<br />ADH: BAH</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T5</td><td>ADH, ADL</td><td>Data</td><td>0</td><td>Write Internal Register to Memory</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  4.      <span>READ -- MODIFY -- WRITE OPERATAIONS</span></h3>
+<div class="div-table">
+<table class="table-inst">
+<tr><td>ASL</td><td>LSR</td><td></td><td></td><td></td></tr>
+<tr><td>DEC</td><td>ROL</td><td></td><td></td><td></td></tr>
+<tr><td>INC</td><td>ROR</td><td></td><td></td><td></td></tr>
+</table>
+</div>
+<p>
+The Read -- Modify -- Write operations involve the loading of operands
+from the operand address, modification of the operand and the resulting
+modified data being stored in the original location.
+</p>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  4.1.    <span>Zero Page Addressing (5 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>ADL</td><td>1</td><td>Fetch Page Zero Effective Address</td></tr>
+<tr><td>T2</td><td>00, ADL</td><td>Data</td><td>1</td><td>Fetch Data</td></tr>
+<tr><td>T3</td><td>00, ADL</td><td>Data</td><td>0</td><td></td></tr>
+<tr><td>T4</td><td>00, ADL</td><td>Modified Data</td><td>0</td><td>Write Modified Data Back into Memory</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  4.2.    <span>Absolute Addressing (6 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>ADL</td><td>1</td><td>Fetch Low-Order Byte of Effective Address</td></tr>
+<tr><td>T2</td><td>PC + 2</td><td>ADH</td><td>1</td><td>Fetch High-Order Byte of Effective Address</td></tr>
+<tr><td>T3</td><td>ADH, ADL</td><td>Data</td><td>1</td><td>Fetch Data</td></tr>
+<tr><td>T4</td><td>ADH, ADL</td><td>Data</td><td>0</td><td></td></tr>
+<tr><td>T5</td><td>ADH, ADL</td><td>Modified Data</td><td>0</td><td>Write Modified Data Back into Memory</td></tr>
+<tr><td>T0</td><td>PC + 3</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  4.3.    <span>Zero Page, X Addressing (6 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>BAL</td><td>1</td><td>Fetch Page Zero Base Address</td></tr>
+<tr><td>T2</td><td>00, BAL</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T3</td><td>ADL: BAL + X (w/o Carry)</td><td>Data</td><td>1</td><td>Fetch Data</td></tr>
+<tr><td>T4</td><td>ADL: BAL + X (w/o Carry)</td><td>Data</td><td>0</td><td></td></tr>
+<tr><td>T5</td><td>ADL: BAL + X (w/o Carry)</td><td>Modified Data</td><td>0</td><td>Write Modified Data Back into Memory</td></tr>
+<tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  4.4.    <span>Absolute, X Addressing (7 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>BAL</td><td>1</td><td>Fetch Low-Order Byte of Base Address</td></tr>
+<tr><td>T2</td><td>PC + 2</td><td>BAH</td><td>1</td><td>Fetch High-Order Byte of Base Address</td></tr>
+<tr><td>T3</td><td>ADL: BAL + X<br />ADH: BAH + C</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T4</td><td>ADL: BAL + X<br />ADH: BAH + C</td><td>Data</td><td>1</td><td>Fetch Data</td></tr>
+<tr><td>T5</td><td>ADH, ADL</td><td>Data</td><td>0</td><td></td></tr>
+<tr><td>T6</td><td>ADH, ADL</td><td>Modified Data</td><td>0</td><td>Write Modified Data Back into Memory</td></tr>
+<tr><td>T0</td><td>PC + 3</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  5.      <span>MISCELLANEOUS OPERATIONS</span></h3>
+<div class="div-table">
+<table class="table-inst">
+<tr><td>BCC</td><td>BRK</td><td>PHP</td><td></td><td></td></tr>
+<tr><td>BCS</td><td>BVC</td><td>PLA</td><td></td><td></td></tr>
+<tr><td>BEQ</td><td>BVS</td><td>PLP</td><td></td><td></td></tr>
+<tr><td>BMI</td><td>JMP</td><td>RTI</td><td></td><td></td></tr>
+<tr><td>BNE</td><td>JSR</td><td>RTS</td><td></td><td></td></tr>
+<tr><td>BPL</td><td>PHA</td><td></td><td></td><td></td></tr>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  5.1.    <span>Push Operations -- PHP, PHA (3 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>OP CODE (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T2</td><td>Stack Pointer<sup>*</sup></td><td>Data</td><td>0</td><td>Write Internal Register into Stack</td></tr>
+<tr><td>T0</td><td>PC + 1</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+* Hereafter referred to as "Stack Ptr."
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  5.2.    <span>Pull Operations -- PLP, PLA (4 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>OP CODE (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T2</td><td>Stack Ptr.</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T3</td><td>Stack Ptr. + 1</td><td>Data</td><td>1</td><td>Fetch Data from Stack</td></tr>
+<tr><td>T0</td><td>PC + 1</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  5.3.    <span>Jump to Subroutine -- JSR (6 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>ADL</td><td>1</td><td>Fetch Low-Order Byte of Subroutine Address</td></tr>
+<tr><td>T2</td><td>Stack Ptr.</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T3</td><td>Stack Ptr.</td><td>PCH</td><td>0</td><td>Push High-Order Byte of Program Counter to Stack</td></tr>
+<tr><td>T4</td><td>Stack Ptr. - 1</td><td>PCL</td><td>0</td><td>Push Low-Order Byte of Program Counter to Stack</td></tr>
+<tr><td>T5</td><td>PC + 2</td><td>ADH</td><td>1</td><td>Fetch High-Order Byte of Subroutine Address</td></tr>
+<tr><td>T0</td><td>Subroutine Address (ADH,&nbsp;ADL)</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  5.4.    <span>Break Operation -- (Hardware Interrupt)-BRK (7 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch BRK OP CODE (or Force BRK)</td></tr>
+<tr><td>T1</td><td>PC + 1<br />(PC on Hardware Interrupt)</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T2</td><td>Stack Ptr.</td><td>PCH</td><td>0</td><td>Push High-Order Byte of Program Counter to Stack</td></tr>
+<tr><td>T3</td><td>Stack Ptr. - 1</td><td>PCL</td><td>0</td><td>Push Low-Order Byte of Program Counter to Stack</td></tr>
+<tr><td>T4</td><td>Stack Ptr. - 2</td><td>P</td><td>0</td><td>Push Status Register to Stack</td></tr>
+<tr><td>T5</td><td>FFFE<br />(NMI-FFFA)<br />(RES-FFFC)</td><td>ADL</td><td>1</td><td>Fetch Low-Order Byte of Interrupt Vector</td></tr>
+<tr><td>T6</td><td>FFFF<br />(NMI-FFFB)<br />(RES-FFFD)</td><td>ADH</td><td>1</td><td>Fetch High-Order Byte of Interrupt Vector</td></tr>
+<tr><td>T0</td><td>Interrupt Vector (ADH,&nbsp;ADL)</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  5.5.    <span>Return from Interrupt -- RTI (6 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T2</td><td>Stack Ptr.</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T3</td><td>Stack Ptr. + 1</td><td>Data</td><td>1</td><td>Pull P from Stack</td></tr>
+<tr><td>T4</td><td>Stack Ptr. + 2</td><td>Data</td><td>1</td><td>Pull PCL from Stack</td></tr>
+<tr><td>T5</td><td>Stack Ptr. + 3</td><td>Data</td><td>1</td><td>Pull PCH from Stack</td></tr>
+<tr><td>T0</td><td>PCH, PCL</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  5.6.    <span>Jump Operation -- JMP</span></h3>
+<h3>A.  5.6.1   <span>Absolute Addressing Mode (3 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>ADL</td><td>1</td><td>Fetch Low-Order Byte of Jump Address</td></tr>
+<tr><td>T2</td><td>PC + 2</td><td>ADH</td><td>1</td><td>Fetch High-Order Byte of Jump Address</td></tr>
+<tr><td>T0</td><td>ADH, ADL</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  5.6.2   <span>Indirect Addressing Mode (5 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>IAL</td><td>1</td><td>Fetch Low-Order Byte of Indirect Address</td></tr>
+<tr><td>T2</td><td>PC + 2</td><td>IAH</td><td>1</td><td>Fetch High-Order Byte of Indirect Address</td></tr>
+<tr><td>T3</td><td>IAH, IAL</td><td>ADL</td><td>1</td><td>Fetch Low-Order Byte of Jump Address</td></tr>
+<tr><td>T4</td><td>IAH, IAL + 1</td><td>ADH</td><td>1</td><td>Fetch High-Order Byte of Jump Address</td></tr>
+<tr><td>T0</td><td>ADH, ADL</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  5.7.    <span>Return from Subroutine -- RTS (6 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T2</td><td>Stack Ptr.</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T3</td><td>Stack Ptr. + 1</td><td>PCL</td><td>1</td><td>Pull PCL from Stack</td></tr>
+<tr><td>T4</td><td>Stack Ptr. + 2</td><td>PCH</td><td>1</td><td>Pull PCH from Stack</td></tr>
+<tr><td>T5</td><td>PCH, PCL (from Stack)</td><td>Data (Discarded)</td><td>1</td><td></td></tr>
+<tr><td>T0</td><td>PCH, PCL + 1</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="div-chunk">
+<h3>A.  5.8.    <span>Branch Operation -- BCC, BCS, BEQ, BMI, BNE, BPL, BVC, BVS (2, 3, or 4 Cycles)</span></h3>
+<div class="div-table">
+<table class="table-cycles">
+<thead>
+<tr><th class="table-step">Tn</th><th class="table-abus">Address Bus</th><th class="table-dbus">Data Bus</th><th class="table-rw">R/W</th><th class="table-comm">Comments</th></tr>
+</thead>
+<tbody>
+<tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
+<tr><td>T1</td><td>PC + 1</td><td>Offset</td><td>1</td><td>Fetch Branch Offest</td></tr>
+<tr><td>T2<sup>*</sup></td><td>PC + 2 + Offset<br />(w/o Carry)</td><td>OP CODE</td><td>1</td><td>Offset Added to Program Counter</td></tr>
+<tr><td>T3<sup>**</sup></td><td>PC + 2 + Offset<br />(with Carry)</td><td>OP CODE</td><td>1</td><td>Carry Added</td></tr>
+</tbody>
+</table>
+&nbsp;* <em>Skip if branch not taken.</em><br />
+** <em>Skip if branch not taken; skip if branch operation does not cross page boundary.</em>
+</div>
+</div>
+
+</body>
+</html>
