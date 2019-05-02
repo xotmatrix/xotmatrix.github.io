@@ -10,15 +10,16 @@ dl { margin-top: 2em; width: 190mm; }
 dt { font-style: italic; font-weight: bold; }
 dd { margin-bottom: 1em; }
 
-h2 { margin: 2em 0; text-align: center; }
-h3 { margin-top: 2em; }
+h2 { font-size: 1.667em; margin: 2em 0; text-align: center; }
+h3 { font-size: 1.333em; margin-top: 2em; }
 h3 > span { text-decoration: underline; }
 
 ol { font-style: italic; margin-right: 15mm; }
 
-p { text-indent: 6mm; width: 190mm; }
+p { width: 190mm; }
+p:before { content: "     "; white-space: pre; }
 
-table { border-collapse: collapse; margin-bottom: 1em; width: 100%; }
+table { border-collapse: collapse; font-size: 1em; margin-bottom: 1em; width: 100%; }
 th, td { text-align: left; vertical-align: top; }
 
 .header { text-align: center; }
@@ -36,7 +37,7 @@ th, td { text-align: left; vertical-align: top; }
 .table-cycles tr:nth-child(odd) { background-color: #F8F8FF; }
 .table-cycles tr:nth-child(even) { background-color: #F0F0F8; }
 .table-cycles thead tr:first-child { background-color: #E8E8EF; }
-/* 96 dpi */
+
 .table-step { width: 8mm;   }
 .table-abus { width: 35mm;  }
 .table-dbus { width: 35mm;  }
@@ -76,7 +77,7 @@ th, td { text-align: left; vertical-align: top; }
 <h2>APPENDIX A</h2>
 <h2>SUMMARY OF SINGLE-CYCLE EXECUTION</h2>
 <p>
-This section contains an outline o£ the data on both the address bus and
+This section contains an outline of the data on both the address bus and
 the data bus for each cycle of the various processor instructions. It tells
 the system designer exactly what to expect while single-cycling through a
 program.
@@ -102,7 +103,7 @@ Single-Cycle Execution.
 <dd>The first byte of the instruction containing the operator and mode of address.</dd>
 
 <dt>OPERAND</dt>
-<dd>The data on which the operation specified In the OP CODE is pertormed.</dd>
+<dd>The data on which the operation specified In the OP CODE is performed.</dd>
 
 <dt>BASE ADDRESS</dt>
 <dd>The address in Indexed addressing modes which specifies the location in memory
@@ -146,7 +147,7 @@ These single-byte instructions require two cycles to execute. During the
 second cycle the address of the next instruction in program sequence will be
 placed on the address bus. However, the OP CODE which appears on the data bus
 during the second cycle will be ignored. This same instruction will be fetched
-on the following cycle, at which time it will ba decoded and executed. The ASL,
+on the following cycle, at which time it will be decoded and executed. The ASL,
 LSR, ROL and ROR instructions apply to the accumulator mode of address.
 </p>
 <div class="div-table">
