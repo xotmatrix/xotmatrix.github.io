@@ -8,6 +8,6 @@ GameMaker examples and demos.
 
 <https://xotmatrix.github.io/6502>
 
-Fork of Easy 6502
+Easy 6502 (Fork)
 
 <https://xotmatrix.github.io/easy6502>
