@@ -2,8 +2,8 @@
 
 GameMaker examples and demos.
 
-<./demos>
+<https://xotmatrix.github.io/demos>
 
 6502 Documentation
 
-<./6502>
+<https://xotmatrix.github.io/6502>
