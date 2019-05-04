@@ -133,12 +133,12 @@ Jump instruction.</dd>
 <h3>A.  1.      <span>SINGLE-BYTE INSTRUCTIONS</span></h3>
 <div class="div-table">
 <table class="table-inst">
-<tr><td>ASL</td><td>DEX</td><td>NOP</td><td>TAX</td></tr>
-<tr><td>   </td><td>DEY</td><td>ROL</td><td>TAY</td></tr>
-<tr><td>CLC</td><td>INX</td><td>ROR</td><td>TSX</td></tr>
-<tr><td>CLD</td><td>INY</td><td>SEC</td><td>TXA</td></tr>
-<tr><td>CLI</td><td>   </td><td>SED</td><td>TXS</td></tr>
-<tr><td>CLV</td><td>LSR</td><td>SEI</td><td>TYA</td></tr>
+<tr><td>ASL</td><td>DEX</td><td>ROL</td><td>TAX</td></tr>
+<tr><td>CLC</td><td>DEY</td><td>ROR</td><td>TAY</td></tr>
+<tr><td>CLD</td><td>INX</td><td>SEC</td><td>TSX</td></tr>
+<tr><td>CLI</td><td>INY</td><td>SED</td><td>TXA</td></tr>
+<tr><td>CLV</td><td>LSR</td><td>SEI</td><td>TXS</td></tr>
+<tr><td>   </td><td>NOP</td><td>   </td><td>TYA</td></tr>
 </table>
 </div>
 <p>
@@ -149,6 +149,7 @@ during the second cycle will be ignored. This same instruction will be fetched
 on the following cycle, at which time it will be decoded and executed. The ASL,
 LSR, ROL and ROR instructions apply to the accumulator mode of address.
 </p>
+<h3>A.  1.1     <span>Implied Addressing (2 Cycles)</span></h3>
 <div class="div-table">
 <table class="table-cycles">
 <thead>
@@ -313,7 +314,7 @@ the next instruction.
 <tr><td>T0</td><td>PC</td><td>OP CODE</td><td>1</td><td>Fetch OP CODE</td></tr>
 <tr><td>T1</td><td>PC + 1</td><td>IAL</td><td>1</td><td>Fetch Page Zero Indirect Address</td></tr>
 <tr><td>T2</td><td>00, IAL</td><td>BAL</td><td>1</td><td>Fetch Low-Order Byte of Base Address</td></tr>
-<tr><td>T3</td><td>00. IAL + 1</td><td>BAH</td><td>1</td><td>Fetch High-Order Byte of Base Address</td></tr>
+<tr><td>T3</td><td>00, IAL + 1</td><td>BAH</td><td>1</td><td>Fetch High-Order Byte of Base Address</td></tr>
 <tr><td>T4</td><td>ADL: BAL + Y<br />ADH: BAH + C</td><td>Data<sup>a</sup></td><td>1</td><td>Fetch Data from Same Page<br />Carry is 0 or 1 as Required from Previous Add Operation</td></tr>
 <tr><td>T5<sup>a</sup></td><td>ADL: BAL + Y<br />ADH: BAH + 1</td><td>Data</td><td>1</td><td>Fetch Data from Next Page</td></tr>
 <tr><td>T0</td><td>PC + 2</td><td>OP CODE</td><td>1</td><td>Next Instruction</td></tr>
