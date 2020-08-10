@@ -43,3 +43,5 @@ For now, this is being used for publishing simple GameMaker examples and demos.
 <https://xotmatrix.github.io/demos/gm-niccc/index.html>
 
 <https://xotmatrix.github.io/demos/mp_grid/index.html>
+
+<https://xotmatrix.github.io/demos/collision-cone/index.html>
