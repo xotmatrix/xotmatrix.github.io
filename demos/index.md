@@ -45,3 +45,6 @@ For now, this is being used for publishing simple GameMaker examples and demos.
 <https://xotmatrix.github.io/demos/mp_grid/index.html>
 
 <https://xotmatrix.github.io/demos/collision-cone/index.html>
+
+<https://xotmatrix.github.io/demos/constricted_path/index.html>
+
