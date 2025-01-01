@@ -17,6 +17,11 @@ fetch('/index.md')
     console.log('Status:', response.status);
     console.log('OK:', response.ok);
     */
+    document.write("<pre>\n");
+    document.write("Server\n");
     document.write(response.headers.get('Date'));
+    document.write("\nClient\n");
+    document.write(new Date().toUTCString());
+    document.write("</pre>");
   })
   .catch(error => console.error('Error:', error));
