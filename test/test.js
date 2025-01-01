@@ -1,3 +1,10 @@
+const _MS_PER_MINUTE = 1000 * 60;
+
+function roundToPlace(n, p) {
+    var multiplier = Math.pow(10, p);
+    return Math.round(n * multiplier) / multiplier;
+}
+
 fetch('/index.md')
   .then(response => {
     /*
@@ -17,11 +24,16 @@ fetch('/index.md')
     console.log('Status:', response.status);
     console.log('OK:', response.ok);
     */
-    document.write("<pre>\n");
-    document.write("Server\n");
-    document.write(response.headers.get('Date'));
-    document.write("\nClient\n");
-    document.write(new Date().toUTCString());
-    document.write("</pre>");
+    server = new Date(response.headers.get('Date'));
+    client = new Date();
+    var message = "<pre>Server:\n" +
+        server.toUTCString() + "\n" +
+        "Client:\n" +
+        client.toUTCString() + "\n" +
+        "Difference:\n" +
+        roundToPlace((client - server) / _MS_PER_MINUTE, 2) + " minutes" +
+        "</pre>";
+    document.getElementById("date").innerHTML = message;
+    console.log(response.text());
   })
   .catch(error => console.error('Error:', error));
