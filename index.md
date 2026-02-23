@@ -11,3 +11,11 @@ GameMaker examples and demos.
 Easy 6502 (Fork)
 
 <https://xotmatrix.github.io/easy6502>
+
+Links
+
+<https://xot.bsky.social>
+
+<https://github.com/xotmatrix>
+
+<https://mastodon.gamedev.place/@xot>
